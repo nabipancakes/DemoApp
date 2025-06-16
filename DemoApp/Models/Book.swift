@@ -5,8 +5,6 @@
 //  Created by Stephanie Shen on 4/14/25.
 //
 
-
-// Book.swift
 import Foundation
 struct Book: Identifiable, Codable, Equatable {
     var id: String

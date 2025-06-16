@@ -2,7 +2,7 @@
 //  CollectionViewModel.swift
 //  TheBookDiaries
 //
-//  Created by Stephanie Shen on 6/15/25.
+//  Created by Stephanie Shen on 4/14/25.
 //
 
 import Foundation
@@ -16,7 +16,6 @@ struct Collection: Identifiable {
 class CollectionViewModel: ObservableObject {
     @Published var collections: [Collection] = []
     
-    // Fetch book and add it to a general list if needed (optional)
     @Published var books: [Book] = []
     
     func fetchBook(from isbn: String) {

@@ -1,24 +1,34 @@
 //
 //  ContentView.swift
-//  DemoApp
+//  TheBookDiaries
 //
-//  Created by Stephanie Shen on 5/27/25.
+//  Created by Stephanie Shen on 4/14/25.
 //
 
 import SwiftUI
-
 struct ContentView: View {
+    @ObservedObject var viewModel: CollectionViewModel
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Bye, world!")
+        TabView {
+            // Home tab (stats)
+            HomeView(viewModel: viewModel)
+                .tabItem {
+                    Label("Home", systemImage: "house.fill")
+                }
+            
+            // Collection tab
+            CollectionView(viewModel: viewModel)
+                .tabItem {
+                    Label("Collection", systemImage: "books.vertical.fill")
+                }
+            
+            // ISBN Scanner tab
+            ISBNView(viewModel: viewModel)
+                .tabItem {
+                    Label("ISBN", systemImage: "barcode.viewfinder")
+                }
         }
-        .padding()
+        .accentColor(.blue)
     }
-}
-
-#Preview {
-    ContentView()
 }

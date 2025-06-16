@@ -1,64 +1,65 @@
 //
-//  BarcodeScannerView.swift
+//  ScannerView.swift
 //  TheBookDiaries
 //
 //  Created by Stephanie Shen on 4/15/25.
 //
 
+
 import SwiftUI
 import AVFoundation
 
-struct BarcodeScannerView: UIViewControllerRepresentable {
-    @Binding var code: String
-
+struct ScannerView: UIViewControllerRepresentable {
     class Coordinator: NSObject, AVCaptureMetadataOutputObjectsDelegate {
-        var parent: BarcodeScannerView
-        var session: AVCaptureSession?
+        var parent: ScannerView
 
-        init(parent: BarcodeScannerView) {
+        init(parent: ScannerView) {
             self.parent = parent
         }
 
         func metadataOutput(_ output: AVCaptureMetadataOutput,
                             didOutput metadataObjects: [AVMetadataObject],
                             from connection: AVCaptureConnection) {
-            if let metadata = metadataObjects.first as? AVMetadataMachineReadableCodeObject,
-               let stringValue = metadata.stringValue {
-                parent.code = stringValue
-                session?.stopRunning()
+            if let metadataObject = metadataObjects.first as? AVMetadataMachineReadableCodeObject,
+               let code = metadataObject.stringValue {
+                AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
+                parent.foundCode(code)
             }
         }
     }
 
+    var foundCode: (String) -> Void
+
     func makeCoordinator() -> Coordinator {
-        return Coordinator(parent: self)
+        Coordinator(parent: self)
     }
 
     func makeUIViewController(context: Context) -> UIViewController {
-        let viewController = UIViewController()
         let session = AVCaptureSession()
-        context.coordinator.session = session
-
         guard let videoCaptureDevice = AVCaptureDevice.default(for: .video),
               let videoInput = try? AVCaptureDeviceInput(device: videoCaptureDevice),
               session.canAddInput(videoInput) else {
-            return viewController
+            return UIViewController()
         }
 
         session.addInput(videoInput)
 
-        let output = AVCaptureMetadataOutput()
-        if session.canAddOutput(output) {
-            session.addOutput(output)
-            output.setMetadataObjectsDelegate(context.coordinator, queue: DispatchQueue.main)
-            output.metadataObjectTypes = [.ean13, .ean8, .upce]
+        let metadataOutput = AVCaptureMetadataOutput()
+        if session.canAddOutput(metadataOutput) {
+            session.addOutput(metadataOutput)
+            metadataOutput.setMetadataObjectsDelegate(context.coordinator, queue: DispatchQueue.main)
+            metadataOutput.metadataObjectTypes = [.ean13, .ean8, .upce]
         }
 
         let previewLayer = AVCaptureVideoPreviewLayer(session: session)
-        previewLayer.frame = UIScreen.main.bounds
         previewLayer.videoGravity = .resizeAspectFill
-        viewController.view.layer.addSublayer(previewLayer)
 
+        let view = UIView()
+        previewLayer.frame = view.layer.bounds
+        view.layer.addSublayer(previewLayer)
+
+        let viewController = UIViewController()
+        viewController.view = view
         session.startRunning()
 
         return viewController

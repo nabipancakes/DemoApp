@@ -2,13 +2,13 @@
 //  TheBookDiariesApp.swift
 //  TheBookDiaries
 //
-//  Created by Stephanie Shen on 6/15/25.
+//  Created by Stephanie Shen on 4/15/25.
 //
 
 import SwiftUI
 
 @main
-struct TheBookDiariesApp: App {
+struct DemoAppApp: App {
     @StateObject private var viewModel = CollectionViewModel()
     
     var body: some Scene {
