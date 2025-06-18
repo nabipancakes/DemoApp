@@ -37,16 +37,17 @@ struct ISBNView: View {
             }
             .navigationTitle("ISBN Scanner")
             .sheet(isPresented: $showingScanner) {
-                BarcodeScannerView(code: $scannedISBN)
-                    .onDisappear {
-                        if !scannedISBN.isEmpty {
-                            BookAPI.fetchBookInfo(isbn: scannedISBN) { book in
-                                DispatchQueue.main.async {
-                                    self.scannedBook = book
-                                }
-                            }
-                        }
+                ZStack(alignment: .topTrailing) {
+                    BarcodeScannerView(code: $scannedISBN)
+                    Button("Close") {
+                        showingScanner = false
                     }
+                    .padding()
+                    .foregroundColor(.white)
+                    .background(Color.black.opacity(0.6))
+                    .clipShape(Capsule())
+                    .padding()
+                }
             }
         }
     }

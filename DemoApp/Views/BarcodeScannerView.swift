@@ -55,9 +55,10 @@ struct BarcodeScannerView: UIViewControllerRepresentable {
         }
 
         let previewLayer = AVCaptureVideoPreviewLayer(session: session)
-        previewLayer.frame = UIScreen.main.bounds
+        previewLayer.frame = viewController.view.bounds
         previewLayer.videoGravity = .resizeAspectFill
         viewController.view.layer.addSublayer(previewLayer)
+        viewController.view.backgroundColor = .black
 
         session.startRunning()
 
