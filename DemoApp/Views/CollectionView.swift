@@ -15,7 +15,10 @@ struct CollectionView: View {
         NavigationView {
             List {
                 ForEach(viewModel.collections) { collection in
-                    Text(collection.name)
+                    NavigationLink(destination: CollectionDetailView(collection: collection)) {
+                        Text(collection.name)
+                    }
+
                 }
             }
             .navigationTitle("My Collections")

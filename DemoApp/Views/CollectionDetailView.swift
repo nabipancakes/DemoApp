@@ -1,3 +1,11 @@
+//
+//  CollectionDetailView.swift
+//  DemoApp
+//
+//  Created by Stephanie Shen on 6/18/25.
+//
+
+
 import SwiftUI
 
 struct CollectionDetailView: View {
@@ -10,7 +18,7 @@ struct CollectionDetailView: View {
                     .foregroundColor(.gray)
             } else {
                 ForEach(collection.books) { book in
-                    BookCard(book: book)  // This assumes you’ve defined BookCard elsewhere
+                    BookCard(book: book)
                 }
             }
         }
