@@ -15,11 +15,11 @@ struct CollectionView: View {
         NavigationView {
             List {
                 ForEach(viewModel.collections) { collection in
-                    NavigationLink(destination: CollectionDetailView(collection: collection)) {
+                    NavigationLink(destination: CollectionDetailView(viewModel: viewModel, collection: collection)) {
                         Text(collection.name)
                     }
-
                 }
+                .onDelete(perform: viewModel.deleteCollections)
             }
             .navigationTitle("My Collections")
             .toolbar {

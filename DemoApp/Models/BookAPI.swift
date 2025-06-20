@@ -6,8 +6,73 @@
 //
 
 import Foundation
+
 class BookAPI {
     static let baseURL = "https://www.googleapis.com/books/v1/volumes"
+    
+    static func searchBooks(query: String, completion: @escaping ([Book]) -> Void) {
+        let cleanedQuery = query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
+        let urlString = "\(baseURL)?q=\(cleanedQuery)&maxResults=20"
+        
+        guard let url = URL(string: urlString) else {
+            print("ERROR: Invalid URL for query: \(urlString)")
+            completion([])
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.addValue("TheBookDiaries/1.0", forHTTPHeaderField: "User-Agent")
+        
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if let httpResponse = response as? HTTPURLResponse {
+                print("DEBUG: HTTP Status Code: \(httpResponse.statusCode)")
+            }
+            if let error = error {
+                print("ERROR: Network error: \(error.localizedDescription)")
+                DispatchQueue.main.async {
+                    completion([])
+                }
+                return
+            }
+            guard let data = data else {
+                print("ERROR: No data received from API")
+                DispatchQueue.main.async {
+                    completion([])
+                }
+                return
+            }
+            do {
+                let decoder = JSONDecoder()
+                let response = try decoder.decode(GoogleBooksResponse.self, from: data)
+                
+                let books: [Book] = response.items?.compactMap { item in
+                    let info = item.volumeInfo
+                    return Book(
+                        id: item.id,
+                        title: info.title,
+                        authors: info.authors ?? ["Unknown Author"],
+                        description: info.description,
+                        thumbnail: info.imageLinks?.thumbnail,
+                        pageCount: info.pageCount,
+                        categories: info.categories,
+                        price: nil,
+                        ageRange: nil
+                    )
+                } ?? []
+                
+                DispatchQueue.main.async {
+                    completion(books)
+                }
+            } catch {
+                print("ERROR: JSON decoding failed: \(error)")
+                DispatchQueue.main.async {
+                    completion([])
+                }
+            }
+        }.resume()
+    }
+
     
     static func fetchBookInfo(isbn: String, completion: @escaping (Book?) -> Void) {
 
@@ -108,7 +173,7 @@ class BookAPI {
         }.resume()
     }
 }
-
+    
 struct GoogleBooksResponse: Codable {
     var items: [GoogleBook]?
 }
