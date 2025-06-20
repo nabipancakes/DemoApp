@@ -6,14 +6,13 @@
 //
 
 import SwiftUI
+import UIKit
 
 @main
 struct DemoAppApp: App {
-    @StateObject private var viewModel = CollectionViewModel()
-    
     var body: some Scene {
         WindowGroup {
-            ContentView(viewModel: viewModel)
+            RootView()
         }
     }
 }
