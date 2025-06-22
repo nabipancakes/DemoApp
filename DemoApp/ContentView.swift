@@ -28,6 +28,12 @@ struct ContentView: View {
                 .tabItem {
                     Label("ISBN", systemImage: "barcode.viewfinder")
                 }
+            
+            // Weekly book
+            WeeklyView(viewModel: viewModel)
+                .tabItem {
+                    Label("Weekly Book", systemImage: "clock.arrow.circlepath")
+                }
         }
         .accentColor(.blue)
     }
