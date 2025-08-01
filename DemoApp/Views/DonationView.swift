@@ -90,6 +90,26 @@ struct DonationHeaderView: View {
                 .font(.body)
                 .foregroundColor(.secondary)
                 .multilineTextAlignment(.center)
+            
+            // Instagram Link
+            Button {
+                if let url = URL(string: "https://www.instagram.com/thebookdiariesorg/") {
+                    UIApplication.shared.open(url)
+                }
+            } label: {
+                HStack(spacing: 8) {
+                    Image(systemName: "camera")
+                        .font(.title2)
+                    Text("Follow us on Instagram")
+                        .font(.subheadline)
+                        .fontWeight(.medium)
+                }
+                .foregroundColor(.purple)
+                .padding(.horizontal, 16)
+                .padding(.vertical, 8)
+                .background(Color.purple.opacity(0.1))
+                .cornerRadius(20)
+            }
         }
         .padding()
     }
@@ -235,14 +255,14 @@ struct DonationImpactView: View {
             VStack(spacing: 12) {
                 ImpactRow(
                     icon: "book.closed",
-                    title: "Reading Programs",
-                    description: "Support community reading initiatives"
+                    title: "Book Donations",
+                    description: "Support donations to underprivileged readers"
                 )
                 
                 ImpactRow(
                     icon: "person.2",
-                    title: "Community Events",
-                    description: "Help organize book clubs and discussions"
+                    title: "The Book Diaries",
+                    description: "Help support a nonprofit"
                 )
                 
                 ImpactRow(
@@ -429,4 +449,4 @@ struct StripePaymentView: View {
             }
             .store(in: &donationService.cancellables)
     }
-} 
+}

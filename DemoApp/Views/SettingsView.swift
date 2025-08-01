@@ -11,6 +11,9 @@ struct SettingsView: View {
     @AppStorage("role") private var userRole: UserRole = .reader
     @AppStorage("theme") private var selectedTheme: AppTheme = .classic
     @State private var showingRoleAlert = false
+    @State private var showingPasswordAlert = false
+    @State private var password = ""
+    @State private var showingPasswordError = false
     
     var body: some View {
         NavigationView {
@@ -89,11 +92,33 @@ struct SettingsView: View {
                     userRole = .reader
                 }
                 Button("Staff") {
-                    userRole = .staff
+                    showingPasswordAlert = true
                 }
                 Button("Cancel", role: .cancel) { }
             } message: {
                 Text("Select your role to access different features.")
+            }
+            .alert("Staff Access", isPresented: $showingPasswordAlert) {
+                SecureField("Enter password", text: $password)
+                Button("Submit") {
+                    if password == "bookiecookie123" {
+                        userRole = .staff
+                        password = ""
+                    } else {
+                        showingPasswordError = true
+                        password = ""
+                    }
+                }
+                Button("Cancel", role: .cancel) {
+                    password = ""
+                }
+            } message: {
+                Text("Enter the staff password to switch to Staff role.")
+            }
+            .alert("Incorrect Password", isPresented: $showingPasswordError) {
+                Button("OK") { }
+            } message: {
+                Text("The password you entered is incorrect. Please try again.")
             }
         }
     }
