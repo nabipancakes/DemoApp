@@ -7,12 +7,16 @@
 
 import SwiftUI
 import UIKit
+import CoreData
 
 @main
 struct DemoAppApp: App {
+    let persistenceController = CoreDataManager.shared
+    
     var body: some Scene {
         WindowGroup {
             RootView()
+                .environment(\.managedObjectContext, persistenceController.context)
         }
     }
 }

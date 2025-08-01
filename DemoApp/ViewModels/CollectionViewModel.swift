@@ -36,15 +36,16 @@ class CollectionViewModel: ObservableObject {
         }
     }
     
-    func addBookToCollection(_ book: Book, collectionID: UUID) {
+    func addBookToCollection(_ book: DemoApp.Book, collectionID: UUID) {
+        guard let collection = collections.first(where: { $0.id == collectionID }) else { return }
+        
+        // Add book to collection
+        var updatedCollection = collection
+        updatedCollection.books.append(book)
+        
+        // Update collections array
         if let index = collections.firstIndex(where: { $0.id == collectionID }) {
-            if !collections[index].books.contains(book) {
-                collections[index].books.append(book)
-            }
-        } else {
-            // If collection with given ID does not exist, create a new "Default" collection with the book
-            let newCollection = Collection(name: "Default", books: [book])
-            collections.append(newCollection)
+            collections[index] = updatedCollection
         }
     }
     

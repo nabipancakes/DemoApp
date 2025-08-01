@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22522" systemVersion="23C71" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="YES" userDefinedModelVersionIdentifier="">
+    <entity name="CoreDataBook" representedClassName="CoreDataBook" syncable="YES" codeGenerationType="class">
+        <attribute name="id" optional="NO" attributeType="String" indexed="YES" defaultValueString=""/>
+        <attribute name="title" optional="NO" attributeType="String" defaultValueString=""/>
+        <attribute name="authors" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String]"/>
+        <attribute name="bookDescription" optional="YES" attributeType="String"/>
+        <attribute name="thumbnail" optional="YES" attributeType="String"/>
+        <attribute name="pageCount" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="categories" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String]"/>
+        <attribute name="price" optional="YES" attributeType="Decimal" defaultValueString="0.0"/>
+        <attribute name="ageRange" optional="YES" attributeType="String"/>
+        <attribute name="isbn" optional="YES" attributeType="String"/>
+        <relationship name="readingLogs" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ReadingLog" inverseName="book" inverseEntity="ReadingLog"/>
+    </entity>
+    <entity name="ReadingLog" representedClassName="ReadingLog" syncable="YES" codeGenerationType="class">
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="dateFinished" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="notes" optional="YES" attributeType="String"/>
+        <relationship name="book" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CoreDataBook" inverseName="readingLogs" inverseEntity="CoreDataBook"/>
+    </entity>
+    <entity name="MonthlyBook" representedClassName="MonthlyBook" syncable="YES" codeGenerationType="class">
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="title" optional="NO" attributeType="String" defaultValueString=""/>
+        <attribute name="author" optional="NO" attributeType="String" defaultValueString=""/>
+        <attribute name="coverURL" optional="YES" attributeType="String"/>
+        <attribute name="month" optional="NO" attributeType="String" defaultValueString=""/>
+        <attribute name="year" optional="NO" attributeType="Integer 32" defaultValueString="2025" usesScalarValueType="YES"/>
+        <attribute name="bookDescription" optional="YES" attributeType="String"/>
+    </entity>
+</model> 

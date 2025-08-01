@@ -9,7 +9,7 @@ import SwiftUI
 
 struct WeeklyView: View {
     @ObservedObject var viewModel: CollectionViewModel
-    @State private var book: Book?
+    @State private var book: DemoApp.Book?
     @State private var isLoading = false
 
     private var currentWeek: Int {
@@ -88,7 +88,7 @@ struct WeeklyView: View {
 
         if !forceRefresh,
            let cachedData = UserDefaults.standard.data(forKey: "weeklyBook-\(currentWeek)"),
-           let cachedBook = try? JSONDecoder().decode(Book.self, from: cachedData) {
+           let cachedBook = try? JSONDecoder().decode(DemoApp.Book.self, from: cachedData) {
             self.book = cachedBook
             self.isLoading = false
             return
@@ -107,7 +107,7 @@ struct WeeklyView: View {
         }
     }
 
-    private func fetchWeeklyBook(completion: @escaping (Book?) -> Void) {
+    private func fetchWeeklyBook(completion: @escaping (DemoApp.Book?) -> Void) {
         let term = weeklySearchTerm()
         let urlString = "https://www.googleapis.com/books/v1/volumes?q=\(term)+subject:fiction&langRestrict=en&printType=books&maxResults=40"
 
@@ -140,7 +140,7 @@ struct WeeklyView: View {
                     thumbnail = nil
                 }
 
-                let book = Book(
+                let book = DemoApp.Book(
                     id: randomItem.id,
                     title: volumeInfo.title,
                     authors: volumeInfo.authors ?? ["Unknown"],

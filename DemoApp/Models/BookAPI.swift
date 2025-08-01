@@ -74,7 +74,7 @@ class BookAPI {
     }
 
     
-    static func fetchBookInfo(isbn: String, completion: @escaping (Book?) -> Void) {
+    static func fetchBookInfo(isbn: String, completion: @escaping (DemoApp.Book?) -> Void) {
 
         let cleanedISBN = isbn.replacingOccurrences(of: "[^0-9X]", with: "", options: .regularExpression)
         

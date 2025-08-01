@@ -11,7 +11,7 @@ struct ISBNView: View {
     @ObservedObject var viewModel: CollectionViewModel
     @State private var showingScanner = false
     @State private var scannedISBN = ""
-    @State private var scannedBook: Book?
+    @State private var scannedBook: DemoApp.Book?
     
     @State private var selectedCollectionID: UUID? = nil
 
@@ -59,7 +59,7 @@ struct ISBNView: View {
             .navigationTitle("ISBN Scanner")
             .sheet(isPresented: $showingScanner) {
                 ZStack(alignment: .topTrailing) {
-                    BarcodeScannerView(code: $scannedISBN)
+                    BarcodeScannerView()
                         .onChange(of: scannedISBN) { newISBN in
                             if !newISBN.isEmpty {
                                 viewModel.fetchBook(from: newISBN)

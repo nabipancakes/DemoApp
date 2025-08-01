@@ -1,0 +1,112 @@
+[
+  {
+    "id": "1",
+    "title": "The Great Gatsby",
+    "authors": ["F. Scott Fitzgerald"],
+    "description": "A story of the fabulously wealthy Jay Gatsby and his love for the beautiful Daisy Buchanan.",
+    "thumbnail": null,
+    "pageCount": 180,
+    "categories": ["Fiction", "Classic"],
+    "price": 9.99,
+    "ageRange": "Adult"
+  },
+  {
+    "id": "2",
+    "title": "To Kill a Mockingbird",
+    "authors": ["Harper Lee"],
+    "description": "The story of young Scout Finch and her father Atticus in a racially divided Alabama town.",
+    "thumbnail": null,
+    "pageCount": 281,
+    "categories": ["Fiction", "Classic"],
+    "price": 12.99,
+    "ageRange": "Young Adult"
+  },
+  {
+    "id": "3",
+    "title": "1984",
+    "authors": ["George Orwell"],
+    "description": "A dystopian novel about totalitarianism and surveillance society.",
+    "thumbnail": null,
+    "pageCount": 328,
+    "categories": ["Fiction", "Dystopian"],
+    "price": 10.99,
+    "ageRange": "Adult"
+  },
+  {
+    "id": "4",
+    "title": "Pride and Prejudice",
+    "authors": ["Jane Austen"],
+    "description": "A romantic novel of manners that follows the emotional development of Elizabeth Bennet.",
+    "thumbnail": null,
+    "pageCount": 432,
+    "categories": ["Fiction", "Romance"],
+    "price": 8.99,
+    "ageRange": "Adult"
+  },
+  {
+    "id": "5",
+    "title": "The Hobbit",
+    "authors": ["J.R.R. Tolkien"],
+    "description": "A fantasy novel about Bilbo Baggins' journey with thirteen dwarves.",
+    "thumbnail": null,
+    "pageCount": 366,
+    "categories": ["Fantasy", "Adventure"],
+    "price": 14.99,
+    "ageRange": "All Ages"
+  },
+  {
+    "id": "6",
+    "title": "The Catcher in the Rye",
+    "authors": ["J.D. Salinger"],
+    "description": "A novel about teenage alienation and loss of innocence in post-World War II America.",
+    "thumbnail": null,
+    "pageCount": 277,
+    "categories": ["Fiction", "Coming of Age"],
+    "price": 11.99,
+    "ageRange": "Young Adult"
+  },
+  {
+    "id": "7",
+    "title": "Lord of the Flies",
+    "authors": ["William Golding"],
+    "description": "A novel about a group of British boys stranded on an uninhabited island.",
+    "thumbnail": null,
+    "pageCount": 224,
+    "categories": ["Fiction", "Allegory"],
+    "price": 9.99,
+    "ageRange": "Young Adult"
+  },
+  {
+    "id": "8",
+    "title": "Animal Farm",
+    "authors": ["George Orwell"],
+    "description": "An allegorical novella about farm animals who rebel against their human farmer.",
+    "thumbnail": null,
+    "pageCount": 112,
+    "categories": ["Fiction", "Allegory"],
+    "price": 7.99,
+    "ageRange": "Adult"
+  },
+  {
+    "id": "9",
+    "title": "The Alchemist",
+    "authors": ["Paulo Coelho"],
+    "description": "A novel about a young Andalusian shepherd who dreams of finding a worldly treasure.",
+    "thumbnail": null,
+    "pageCount": 208,
+    "categories": ["Fiction", "Adventure"],
+    "price": 13.99,
+    "ageRange": "Adult"
+  },
+  {
+    "id": "10",
+    "title": "The Little Prince",
+    "authors": ["Antoine de Saint-Exupéry"],
+    "description": "A poetic tale about a young prince who visits various planets in space.",
+    "thumbnail": null,
+    "pageCount": 96,
+    "categories": ["Fiction", "Children's Literature"],
+    "price": 6.99,
+    "ageRange": "All Ages"
+  }
+] 

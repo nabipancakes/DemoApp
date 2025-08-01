@@ -9,7 +9,7 @@ import SwiftUI
 
 struct AddCollectionView: View {
     @ObservedObject var viewModel: CollectionViewModel
-    @Environment(\.presentationMode) var presentationMode
+    @Environment(\.dismiss) var dismiss
     @State private var collectionName = ""
     
     var body: some View {
@@ -23,13 +23,13 @@ struct AddCollectionView: View {
                     Button("Save") {
                         if !collectionName.isEmpty {
                             viewModel.addCollection(name: collectionName)
-                            presentationMode.wrappedValue.dismiss()
+                            dismiss()
                         }
                     }
                 }
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") {
-                        presentationMode.wrappedValue.dismiss()
+                        dismiss()
                     }
                 }
             }
