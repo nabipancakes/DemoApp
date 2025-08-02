@@ -11,6 +11,8 @@ struct ReadingTrackerView: View {
     @ObservedObject private var readingTracker = ReadingTrackerService.shared
     @State private var showingAddLog = false
     @State private var selectedTimeFilter: TimeFilter = .allTime
+    @AppStorage("readingGoal") private var readingGoal: Int = 10
+    @State private var showingGoalEditor = false
     
     enum TimeFilter: String, CaseIterable {
         case allTime = "All Time"
@@ -45,6 +47,12 @@ struct ReadingTrackerView: View {
             }
             .navigationTitle("Reading Tracker")
             .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button("Goal") {
+                        showingGoalEditor = true
+                    }
+                }
+                
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("Add Log") {
                         showingAddLog = true
@@ -53,6 +61,9 @@ struct ReadingTrackerView: View {
             }
             .sheet(isPresented: $showingAddLog) {
                 AddReadingLogView()
+            }
+            .sheet(isPresented: $showingGoalEditor) {
+                ReadingGoalEditorView(readingGoal: $readingGoal)
             }
             .refreshable {
                 readingTracker.loadReadingLogs()
@@ -64,6 +75,7 @@ struct ReadingTrackerView: View {
 struct ProgressOverviewCard: View {
     @ObservedObject private var readingTracker = ReadingTrackerService.shared
     @ObservedObject private var dailyBookService = DailyBookService.shared
+    @AppStorage("readingGoal") private var readingGoal: Int = 10
     
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -83,10 +95,10 @@ struct ProgressOverviewCard: View {
                 Spacer()
                 
                 VStack(alignment: .center) {
-                    Text("\(dailyBookService.totalSeedBooksCount)")
+                    Text("\(readingGoal)")
                         .font(.title)
                         .fontWeight(.bold)
-                    Text("Total Books")
+                    Text("Goal")
                         .font(.caption)
                         .foregroundColor(.secondary)
                 }
@@ -94,7 +106,7 @@ struct ProgressOverviewCard: View {
                 Spacer()
                 
                 VStack(alignment: .trailing) {
-                    Text("\(Int(readingTracker.progressPercent * 100))%")
+                    Text("\(Int(min(Double(readingTracker.totalReadCount) / Double(readingGoal), 1.0) * 100))%")
                         .font(.title)
                         .fontWeight(.bold)
                     Text("Complete")
@@ -103,7 +115,7 @@ struct ProgressOverviewCard: View {
                 }
             }
             
-            ProgressView(value: readingTracker.progressPercent)
+            ProgressView(value: min(Double(readingTracker.totalReadCount) / Double(readingGoal), 1.0))
                 .progressViewStyle(LinearProgressViewStyle())
             
             HStack {
@@ -342,6 +354,67 @@ struct BookPickerView: View {
                 }
             }
             .navigationTitle("Select Book")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button("Cancel") {
+                        dismiss()
+                    }
+                }
+            }
+        }
+    }
+}
+
+struct ReadingGoalEditorView: View {
+    @Binding var readingGoal: Int
+    @Environment(\.dismiss) var dismiss
+    @State private var tempGoal: String = ""
+    
+    var body: some View {
+        NavigationView {
+            Form {
+                Section(header: Text("Reading Goal")) {
+                    TextField("Number of books", text: $tempGoal)
+                        .keyboardType(.numberPad)
+                        .onAppear {
+                            tempGoal = String(readingGoal)
+                        }
+                }
+                
+                Section(header: Text("Goal Types")) {
+                    Button("10 books (Monthly)") {
+                        readingGoal = 10
+                        dismiss()
+                    }
+                    
+                    Button("25 books (Quarterly)") {
+                        readingGoal = 25
+                        dismiss()
+                    }
+                    
+                    Button("50 books (Semi-annual)") {
+                        readingGoal = 50
+                        dismiss()
+                    }
+                    
+                    Button("100 books (Annual)") {
+                        readingGoal = 100
+                        dismiss()
+                    }
+                }
+                
+                Section {
+                    Button("Save Custom Goal") {
+                        if let goal = Int(tempGoal), goal > 0 {
+                            readingGoal = goal
+                            dismiss()
+                        }
+                    }
+                    .disabled(Int(tempGoal) == nil || Int(tempGoal) ?? 0 <= 0)
+                }
+            }
+            .navigationTitle("Set Reading Goal")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {

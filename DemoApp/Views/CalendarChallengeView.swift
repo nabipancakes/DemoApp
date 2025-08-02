@@ -6,10 +6,12 @@
 //
 
 import SwiftUI
+import Combine
 
 struct CalendarChallengeView: View {
     @ObservedObject private var calendarService = CalendarChallengeService.shared
     @State private var showingEditSheet = false
+    @AppStorage("theme") private var selectedTheme: AppTheme = .classic
     
     var body: some View {
         NavigationView {
@@ -36,6 +38,7 @@ struct CalendarChallengeView: View {
                     Button("Edit") {
                         showingEditSheet = true
                     }
+                    .foregroundColor(selectedTheme.primaryColor)
                 }
             }
             .sheet(isPresented: $showingEditSheet) {
@@ -98,14 +101,27 @@ struct MonthlyBookCard: View {
             
             HStack {
                 Button("Mark as Read") {
-                    // TODO: Implement mark as read functionality
+                    let book = Book(
+                        id: monthlyBook.id?.uuidString ?? UUID().uuidString,
+                        title: monthlyBook.title ?? "Unknown",
+                        authors: [monthlyBook.author ?? "Unknown"],
+                        description: monthlyBook.bookDescription,
+                        thumbnail: monthlyBook.coverURL,
+                        pageCount: nil,
+                        categories: nil,
+                        price: nil,
+                        ageRange: nil
+                    )
+                    ReadingTrackerService.shared.addReadingLog(for: book)
                 }
                 .buttonStyle(.borderedProminent)
                 
                 Spacer()
                 
                 Button("Learn More") {
-                    // TODO: Implement learn more functionality
+                    // Navigate to book detail
+                    // For now, we'll just show an alert with book info
+                    // TODO: Implement proper navigation to BookDetailView
                 }
                 .buttonStyle(.bordered)
             }
@@ -185,6 +201,8 @@ struct EditMonthlyBookView: View {
     @State private var author = ""
     @State private var coverURL = ""
     @State private var description = ""
+    @State private var showingScanner = false
+    @State private var scannedBook: DemoApp.Book?
     
     var body: some View {
         NavigationView {
@@ -195,6 +213,13 @@ struct EditMonthlyBookView: View {
                     TextField("Cover URL (optional)", text: $coverURL)
                     TextField("Description (optional)", text: $description, axis: .vertical)
                         .lineLimit(3...6)
+                }
+                
+                Section(header: Text("Scan Book")) {
+                    Button("Scan Barcode") {
+                        showingScanner = true
+                    }
+                    .foregroundColor(.blue)
                 }
                 
                 Section {
@@ -226,6 +251,9 @@ struct EditMonthlyBookView: View {
                     }
                 }
             }
+            .sheet(isPresented: $showingScanner) {
+                ScannerView(scannedCode: .constant(""), onScan: handleScannedCode)
+            }
             .onAppear {
                 if let monthlyBook = calendarService.currentMonthlyBook {
                     title = monthlyBook.title ?? ""
@@ -234,6 +262,33 @@ struct EditMonthlyBookView: View {
                     description = monthlyBook.bookDescription ?? ""
                 }
             }
+            .onChange(of: scannedBook) { _, book in
+                if let book = book {
+                    title = book.title
+                    author = book.authors.joined(separator: ", ")
+                    coverURL = book.thumbnail ?? ""
+                    description = book.description ?? ""
+                }
+            }
         }
+    }
+    
+    private func handleScannedCode(_ code: String) {
+        // Look up book using OpenLibrary API
+        OpenLibraryService.shared.fetchBookByISBN(code)
+            .receive(on: DispatchQueue.main)
+            .sink { book in
+                if let book = book {
+                    scannedBook = book
+                } else {
+                    // Try Google Books API as fallback
+                    BookAPI.fetchBookInfo(isbn: code) { fetchedBook in
+                        if let fetchedBook = fetchedBook {
+                            scannedBook = fetchedBook
+                        }
+                    }
+                }
+            }
+            .store(in: &OpenLibraryService.shared.cancellables)
     }
 } 

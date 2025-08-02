@@ -85,7 +85,11 @@ class OpenLibraryService: ObservableObject {
             }
             .catch { error -> AnyPublisher<DemoApp.Book?, Never> in
                 DispatchQueue.main.async { [weak self] in
-                    self?.error = "Failed to fetch book: \(error.localizedDescription)"
+                    if let decodingError = error as? DecodingError {
+                        self?.error = "Book not found or invalid format"
+                    } else {
+                        self?.error = "Failed to fetch book: \(error.localizedDescription)"
+                    }
                     self?.isLoading = false
                 }
                 return Just(nil).eraseToAnyPublisher()

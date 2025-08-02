@@ -150,9 +150,17 @@ struct AmountSelectionView: View {
                 TextField("Custom amount", text: $customAmount)
                     .keyboardType(.decimalPad)
                     .font(.title2)
-                    .onChange(of: customAmount) { newValue in
+                    .onChange(of: customAmount) { _, newValue in
                         if !newValue.isEmpty {
                             selectedAmount = 0
+                        }
+                    }
+                    .toolbar {
+                        ToolbarItemGroup(placement: .keyboard) {
+                            Spacer()
+                            Button("Done") {
+                                UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                            }
                         }
                     }
             }
@@ -256,19 +264,25 @@ struct DonationImpactView: View {
                 ImpactRow(
                     icon: "book.closed",
                     title: "Book Donations",
-                    description: "Support donations to underprivileged readers"
+                    description: "Directly fund book purchases for underprivileged readers and schools"
                 )
                 
                 ImpactRow(
                     icon: "person.2",
-                    title: "The Book Diaries",
-                    description: "Help support a nonprofit"
+                    title: "Community Building",
+                    description: "Support reading programs and literacy initiatives"
                 )
                 
                 ImpactRow(
                     icon: "wifi",
-                    title: "Platform Maintenance",
-                    description: "Keep the app running smoothly"
+                    title: "Platform Development",
+                    description: "Maintain and improve the reading community platform"
+                )
+                
+                ImpactRow(
+                    icon: "heart.fill",
+                    title: "Educational Access",
+                    description: "Ensure every reader has access to quality literature"
                 )
             }
         }

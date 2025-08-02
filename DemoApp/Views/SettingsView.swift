@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CoreData
 
 struct SettingsView: View {
     @AppStorage("role") private var userRole: UserRole = .reader
@@ -69,7 +70,9 @@ struct SettingsView: View {
                     }
                     
                     Button("Send Feedback") {
-                        // TODO: Implement feedback functionality
+                        if let url = URL(string: "mailto:feedback@bookdiaries.org?subject=App%20Feedback") {
+                            UIApplication.shared.open(url)
+                        }
                     }
                     .foregroundColor(.blue)
                 }
@@ -77,12 +80,12 @@ struct SettingsView: View {
                 // Data Section
                 Section(header: Text("Data")) {
                     Button("Export Reading Data") {
-                        // TODO: Implement data export
+                        exportReadingData()
                     }
                     .foregroundColor(.blue)
                     
                     Button("Clear All Data", role: .destructive) {
-                        // TODO: Implement data clearing
+                        clearAllData()
                     }
                 }
             }
@@ -101,7 +104,7 @@ struct SettingsView: View {
             .alert("Staff Access", isPresented: $showingPasswordAlert) {
                 SecureField("Enter password", text: $password)
                 Button("Submit") {
-                    if password == "bookiecookie123" {
+                    if password == "hello" {
                         userRole = .staff
                         password = ""
                     } else {
@@ -120,6 +123,56 @@ struct SettingsView: View {
             } message: {
                 Text("The password you entered is incorrect. Please try again.")
             }
+        }
+    }
+    
+    private func exportReadingData() {
+        let readingTracker = ReadingTrackerService.shared
+        let logs = readingTracker.readingLogs
+        
+        var csvContent = "Title,Author,Date Finished,Notes\n"
+        
+        for log in logs {
+            let title = log.book?.title ?? "Unknown"
+            let author = log.book?.authors?.joined(separator: ", ") ?? "Unknown"
+            let date = log.dateFinished?.description ?? "Unknown"
+            let notes = log.notes ?? ""
+            
+            csvContent += "\"\(title)\",\"\(author)\",\"\(date)\",\"\(notes)\"\n"
+        }
+        
+        // Create a temporary file
+        let tempURL = FileManager.default.temporaryDirectory.appendingPathComponent("reading_data.csv")
+        
+        do {
+            try csvContent.write(to: tempURL, atomically: true, encoding: .utf8)
+            
+            let activityVC = UIActivityViewController(activityItems: [tempURL], applicationActivities: nil)
+            
+            if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+               let window = windowScene.windows.first {
+                window.rootViewController?.present(activityVC, animated: true)
+            }
+        } catch {
+            print("Error exporting data: \(error)")
+        }
+    }
+    
+    private func clearAllData() {
+        let coreDataManager = CoreDataManager.shared
+        
+        // Clear all reading logs
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = ReadingLog.fetchRequest()
+        let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+        
+        do {
+            try coreDataManager.context.execute(deleteRequest)
+            try coreDataManager.context.save()
+            
+            // Refresh reading tracker
+            ReadingTrackerService.shared.loadReadingLogs()
+        } catch {
+            print("Error clearing data: \(error)")
         }
     }
 }

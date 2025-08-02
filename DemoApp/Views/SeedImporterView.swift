@@ -69,8 +69,10 @@ struct SeedImporterView: View {
     }
     
     private func deleteBooks(at offsets: IndexSet) {
-        // TODO: Implement delete functionality
-        // This would require updating the DailyBookService to support removing books
+        for index in offsets {
+            let book = filteredBooks[index]
+            DailyBookService.shared.removeBookFromSeedBooks(book)
+        }
     }
 }
 
@@ -256,10 +258,20 @@ struct ImportSeedBooksView: View {
     }
     
     private func importBooks() {
-        // TODO: Implement JSON parsing and book import
-        // This would require updating the DailyBookService to support adding books
-        alertMessage = "Import functionality coming soon!"
-        showingAlert = true
+        do {
+            let data = importText.data(using: .utf8) ?? Data()
+            let books = try JSONDecoder().decode([DemoApp.Book].self, from: data)
+            
+            for book in books {
+                DailyBookService.shared.addBookToSeedBooks(book)
+            }
+            
+            alertMessage = "Successfully imported \(books.count) books!"
+            showingAlert = true
+        } catch {
+            alertMessage = "Failed to import books: \(error.localizedDescription)"
+            showingAlert = true
+        }
     }
 }
 
@@ -306,8 +318,19 @@ struct AddSeedBookView: View {
     }
     
     private func addBook() {
-        // TODO: Implement adding book to seed collection
-        // This would require updating the DailyBookService to support adding books
+        let newBook = DemoApp.Book(
+            id: UUID().uuidString,
+            title: title,
+            authors: authors.components(separatedBy: ",").map { $0.trimmingCharacters(in: .whitespaces) },
+            description: description.isEmpty ? nil : description,
+            thumbnail: coverURL.isEmpty ? nil : coverURL,
+            pageCount: Int(pageCount),
+            categories: categories.isEmpty ? nil : categories.components(separatedBy: ",").map { $0.trimmingCharacters(in: .whitespaces) },
+            price: nil,
+            ageRange: nil
+        )
+        
+        DailyBookService.shared.addBookToSeedBooks(newBook)
         dismiss()
     }
 } 

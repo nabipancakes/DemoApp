@@ -74,7 +74,7 @@ struct BarcodeScannerView: View {
             .sheet(isPresented: $showingScanner) {
                 ScannerView(scannedCode: $scannedCode, onScan: handleScannedCode)
             }
-            .onChange(of: scannedCode) { newValue in
+            .onChange(of: scannedCode) { _, newValue in
                 if !newValue.isEmpty {
                     handleScannedCode(newValue)
                 }
@@ -106,7 +106,9 @@ struct BarcodeScannerView: View {
     }
     
     private func addBookToCatalog(_ book: DemoApp.Book) {
-        let coreDataBook = coreDataManager.createBook(from: book)
+        _ = coreDataManager.createBook(from: book)
+        // Add to daily book service seed books
+        DailyBookService.shared.addBookToSeedBooks(book)
         resetScanner()
     }
     

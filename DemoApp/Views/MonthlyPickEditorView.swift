@@ -79,7 +79,7 @@ struct CurrentMonthlyBookCard: View {
                         .font(.subheadline)
                         .foregroundColor(.secondary)
                     
-                    Text("\(monthlyBook.month ?? "Unknown") \(monthlyBook.year)")
+                    Text("\(monthlyBook.month ?? "Unknown") \(String(monthlyBook.year))")
                         .font(.caption)
                         .foregroundColor(.secondary)
                 }
@@ -262,7 +262,7 @@ struct HistoricalBookCard: View {
                     .fontWeight(.medium)
                     .lineLimit(2)
                 
-                Text("\(monthlyBook.month ?? "Unknown") \(monthlyBook.year)")
+                Text("\(monthlyBook.month ?? "Unknown") \(String(monthlyBook.year))")
                     .font(.caption2)
                     .foregroundColor(.secondary)
             }

@@ -12,6 +12,9 @@ enum AppTheme: String, CaseIterable {
     case classic = "classic"
     case midnight = "midnight"
     case sepia = "sepia"
+    case forest = "forest"
+    case ocean = "ocean"
+    case sunset = "sunset"
     
     var displayName: String {
         switch self {
@@ -21,6 +24,12 @@ enum AppTheme: String, CaseIterable {
             return "Midnight"
         case .sepia:
             return "Sepia"
+        case .forest:
+            return "Forest"
+        case .ocean:
+            return "Ocean"
+        case .sunset:
+            return "Sunset"
         }
     }
     
@@ -31,6 +40,12 @@ enum AppTheme: String, CaseIterable {
         case .midnight:
             return .dark
         case .sepia:
+            return .light
+        case .forest:
+            return .light
+        case .ocean:
+            return .light
+        case .sunset:
             return .light
         }
     }
@@ -43,6 +58,12 @@ enum AppTheme: String, CaseIterable {
             return .purple
         case .sepia:
             return .orange
+        case .forest:
+            return .green
+        case .ocean:
+            return .cyan
+        case .sunset:
+            return .red
         }
     }
     
@@ -54,6 +75,12 @@ enum AppTheme: String, CaseIterable {
             return Color(.systemGray6)
         case .sepia:
             return Color(.systemYellow).opacity(0.1)
+        case .forest:
+            return Color(.systemGreen).opacity(0.1)
+        case .ocean:
+            return Color(.systemBlue).opacity(0.1)
+        case .sunset:
+            return Color(.systemOrange).opacity(0.1)
         }
     }
     
@@ -65,6 +92,12 @@ enum AppTheme: String, CaseIterable {
             return .cyan
         case .sepia:
             return .brown
+        case .forest:
+            return .mint
+        case .ocean:
+            return .teal
+        case .sunset:
+            return .pink
         }
     }
 } 

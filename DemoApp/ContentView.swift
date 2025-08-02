@@ -65,5 +65,6 @@ struct ContentView: View {
         }
         .accentColor(selectedTheme.accentColor)
         .preferredColorScheme(selectedTheme.colorScheme)
+        .background(selectedTheme.backgroundColor)
     }
 }

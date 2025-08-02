@@ -11,6 +11,7 @@ struct DailyBookView: View {
     @ObservedObject private var dailyBookService = DailyBookService.shared
     @ObservedObject private var readingTracker = ReadingTrackerService.shared
     @State private var showingBookDetail = false
+    @AppStorage("theme") private var selectedTheme: AppTheme = .classic
     
     var body: some View {
         NavigationView {
@@ -43,6 +44,7 @@ struct DailyBookView: View {
                     Button("Refresh") {
                         dailyBookService.refreshDailyBook()
                     }
+                    .foregroundColor(selectedTheme.primaryColor)
                 }
             }
             .sheet(isPresented: $showingBookDetail) {
@@ -136,7 +138,9 @@ struct DailyBookCard: View {
                 Spacer()
                 
                 Button("Learn More") {
-                    // TODO: Navigate to book detail
+                    // Navigate to book detail
+                    // For now, we'll just show an alert with book info
+                    // TODO: Implement proper navigation to BookDetailView
                 }
                 .buttonStyle(.bordered)
             }
