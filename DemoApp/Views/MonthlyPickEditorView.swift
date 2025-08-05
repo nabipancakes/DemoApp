@@ -181,7 +181,7 @@ struct MonthYearSelectorView: View {
                 
                 Picker("Year", selection: $selectedYear) {
                     ForEach(2020...2030, id: \.self) { year in
-                        Text("\(year)").tag(year)
+                        Text(String(year)).tag(year)
                     }
                 }
                 .pickerStyle(MenuPickerStyle())

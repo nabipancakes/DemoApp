@@ -13,21 +13,7 @@ struct BookDetailView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
-                if let urlString = book.thumbnail, let url = URL(string: urlString) {
-                    AsyncImage(url: url) { image in
-                        image
-                            .resizable()
-                            .scaledToFit()
-                            .frame(maxWidth: 200)
-                    } placeholder: {
-                        ProgressView()
-                    }
-                } else {
-                    Rectangle()
-                        .fill(Color.gray.opacity(0.3))
-                        .frame(width: 200, height: 300)
-                        .overlay(Text("No Image").foregroundColor(.gray))
-                }
+                BookCoverView(book: book, width: 200, height: 300)
 
                 Text(book.title)
                     .font(.title)

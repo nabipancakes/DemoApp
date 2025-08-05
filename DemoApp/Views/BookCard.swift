@@ -13,17 +13,7 @@ struct BookCard: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
-            if let thumbnail = book.thumbnail, let url = URL(string: thumbnail) {
-                AsyncImage(url: url) { image in
-                    image
-                        .resizable()
-                        .scaledToFit()
-                        .frame(height: 150)
-                        .cornerRadius(10)
-                } placeholder: {
-                    ProgressView()
-                }
-            }
+            BookCoverView(book: book, width: 150, height: 200)
 
             Text(book.title)
                 .font(.headline)

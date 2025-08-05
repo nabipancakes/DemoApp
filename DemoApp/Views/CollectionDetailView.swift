@@ -14,6 +14,9 @@ struct CollectionDetailView: View {
     @State private var searchQuery = ""
     @State private var searchResults: [Book] = []
     @State private var isSearching = false
+    @State private var showingBarcodeScanner = false
+    @State private var showingExportSheet = false
+    @State private var csvFileURL: URL?
 
     var body: some View {
         VStack {
@@ -61,6 +64,57 @@ struct CollectionDetailView: View {
             }
         }
         .navigationTitle(collection.name)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Menu {
+                    Button {
+                        showingBarcodeScanner = true
+                    } label: {
+                        Label("Scan Book", systemImage: "barcode.viewfinder")
+                    }
+                    
+                    Button {
+                        exportCollection()
+                    } label: {
+                        Label("Export Collection", systemImage: "square.and.arrow.up")
+                    }
+                } label: {
+                    Image(systemName: "ellipsis.circle")
+                }
+            }
+        }
+        .sheet(isPresented: $showingBarcodeScanner) {
+            CollectionBarcodeScannerView(viewModel: viewModel, collection: collection)
+        }
+        .sheet(isPresented: $showingExportSheet) {
+            if let url = csvFileURL {
+                ShareSheet(activityItems: [url])
+            }
+        }
+    }
+    
+    private func exportCollection() {
+        var csvContent = "Title,Author,Description,Page Count,Categories\n"
+        
+        for book in collection.books {
+            let title = book.title
+            let author = book.authors.joined(separator: ", ")
+            let description = book.description ?? ""
+            let pageCount = book.pageCount?.description ?? ""
+            let categories = book.categories?.joined(separator: ", ") ?? ""
+            
+            csvContent += "\"\(title)\",\"\(author)\",\"\(description)\",\"\(pageCount)\",\"\(categories)\"\n"
+        }
+        
+        let tempURL = FileManager.default.temporaryDirectory.appendingPathComponent("\(collection.name)_books.csv")
+        
+        do {
+            try csvContent.write(to: tempURL, atomically: true, encoding: .utf8)
+            csvFileURL = tempURL
+            showingExportSheet = true
+        } catch {
+            print("Error exporting collection: \(error)")
+        }
     }
 
     func searchBooks(query: String) {

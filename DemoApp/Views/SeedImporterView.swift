@@ -141,26 +141,7 @@ struct SeedBookRow: View {
     var body: some View {
         HStack {
             // Book Cover
-            if let thumbnail = book.thumbnail, !thumbnail.isEmpty {
-                AsyncImage(url: URL(string: thumbnail)) { image in
-                    image
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                } placeholder: {
-                    Image(systemName: "book.closed")
-                        .font(.system(size: 20))
-                        .foregroundColor(.gray)
-                }
-                .frame(width: 40, height: 60)
-                .cornerRadius(4)
-            } else {
-                Image(systemName: "book.closed")
-                    .font(.system(size: 20))
-                    .foregroundColor(.gray)
-                    .frame(width: 40, height: 60)
-                    .background(Color.gray.opacity(0.2))
-                    .cornerRadius(4)
-            }
+            BookCoverView(book: book, width: 40, height: 60)
             
             // Book Info
             VStack(alignment: .leading, spacing: 2) {

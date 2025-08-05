@@ -15,6 +15,8 @@ struct SettingsView: View {
     @State private var showingPasswordAlert = false
     @State private var password = ""
     @State private var showingPasswordError = false
+    @State private var showingShareSheet = false
+    @State private var csvFileURL: URL?
     
     var body: some View {
         NavigationView {
@@ -70,7 +72,7 @@ struct SettingsView: View {
                     }
                     
                     Button("Send Feedback") {
-                        if let url = URL(string: "mailto:feedback@bookdiaries.org?subject=App%20Feedback") {
+                        if let url = URL(string: "mailto:info.thebookdiaries@gmail.com?subject=App%20Feedback") {
                             UIApplication.shared.open(url)
                         }
                     }
@@ -123,6 +125,11 @@ struct SettingsView: View {
             } message: {
                 Text("The password you entered is incorrect. Please try again.")
             }
+            .sheet(isPresented: $showingShareSheet) {
+                if let url = csvFileURL {
+                    ShareSheet(activityItems: [url])
+                }
+            }
         }
     }
     
@@ -135,7 +142,9 @@ struct SettingsView: View {
         for log in logs {
             let title = log.book?.title ?? "Unknown"
             let author = log.book?.authors?.joined(separator: ", ") ?? "Unknown"
-            let date = log.dateFinished?.description ?? "Unknown"
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateStyle = .short
+            let date = log.dateFinished.map { dateFormatter.string(from: $0) } ?? "Unknown"
             let notes = log.notes ?? ""
             
             csvContent += "\"\(title)\",\"\(author)\",\"\(date)\",\"\(notes)\"\n"
@@ -146,13 +155,8 @@ struct SettingsView: View {
         
         do {
             try csvContent.write(to: tempURL, atomically: true, encoding: .utf8)
-            
-            let activityVC = UIActivityViewController(activityItems: [tempURL], applicationActivities: nil)
-            
-            if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-               let window = windowScene.windows.first {
-                window.rootViewController?.present(activityVC, animated: true)
-            }
+            csvFileURL = tempURL
+            showingShareSheet = true
         } catch {
             print("Error exporting data: \(error)")
         }
@@ -210,4 +214,19 @@ struct ThemePreviewView: View {
         }
         .padding(.vertical, 4)
     }
-} 
+}
+
+struct ShareSheet: UIViewControllerRepresentable {
+    let activityItems: [Any]
+    let applicationActivities: [UIActivity]? = nil
+    
+    func makeUIViewController(context: UIViewControllerRepresentableContext<ShareSheet>) -> UIActivityViewController {
+        let controller = UIActivityViewController(
+            activityItems: activityItems,
+            applicationActivities: applicationActivities
+        )
+        return controller
+    }
+    
+    func updateUIViewController(_ uiViewController: UIActivityViewController, context: UIViewControllerRepresentableContext<ShareSheet>) {}
+}

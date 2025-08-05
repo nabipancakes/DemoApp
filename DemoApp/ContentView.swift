@@ -31,6 +31,11 @@ struct ContentView: View {
                         Label("Tracker", systemImage: "chart.bar")
                     }
                 
+                CollectionView(viewModel: viewModel)
+                    .tabItem {
+                        Label("Collections", systemImage: "books.vertical")
+                    }
+                
                 DonationView()
                     .tabItem {
                         Label("Donate", systemImage: "heart")
@@ -47,6 +52,11 @@ struct ContentView: View {
                         Label("Scanner", systemImage: "barcode.viewfinder")
                     }
                 
+                CollectionView(viewModel: viewModel)
+                    .tabItem {
+                        Label("Collections", systemImage: "books.vertical")
+                    }
+                
                 MonthlyPickEditorView()
                     .tabItem {
                         Label("Monthly Pick", systemImage: "calendar.badge.plus")
@@ -54,7 +64,7 @@ struct ContentView: View {
                 
                 SeedImporterView()
                     .tabItem {
-                        Label("Seed Books", systemImage: "books.vertical")
+                        Label("Seed Books", systemImage: "tray.full")
                     }
                 
                 SettingsView()

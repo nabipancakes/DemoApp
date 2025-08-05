@@ -8,6 +8,7 @@
 import Foundation
 import Combine
 import CoreData
+import SwiftUI
 
 struct ChecklistProgress {
     let readCount: Int
@@ -32,12 +33,14 @@ class ReadingTrackerService: ObservableObject {
     @Published var checklistProgress: ChecklistProgress = ChecklistProgress(readCount: 0, totalCount: 0)
     @Published var isLoading = false
     @Published var error: String?
+    @Published var readingGoal: Int = 10
     
     private let coreDataManager = CoreDataManager.shared
     private let dailyBookService = DailyBookService.shared
     private var cancellables = Set<AnyCancellable>()
     
     private init() {
+        loadReadingGoal()
         loadReadingLogs()
         setupPublishers()
     }
@@ -102,10 +105,34 @@ class ReadingTrackerService: ObservableObject {
     private func updateProgress() {
         totalReadCount = readingLogs.count
         
-        let totalBooks = dailyBookService.totalSeedBooksCount
-        progressPercent = totalBooks > 0 ? Double(totalReadCount) / Double(totalBooks) : 0.0
+        // Use reading goal for progress calculation instead of total seed books
+        progressPercent = readingGoal > 0 ? min(Double(totalReadCount) / Double(readingGoal), 1.0) : 0.0
         
-        checklistProgress = ChecklistProgress(readCount: totalReadCount, totalCount: totalBooks)
+        checklistProgress = ChecklistProgress(readCount: totalReadCount, totalCount: readingGoal)
+    }
+    
+    private func loadReadingGoal() {
+        // Load reading goal from UserDefaults/AppStorage
+        readingGoal = UserDefaults.standard.object(forKey: "readingGoal") as? Int ?? 10
+        
+        // Monitor changes to reading goal
+        NotificationCenter.default.addObserver(
+            forName: UserDefaults.didChangeNotification,
+            object: nil,
+            queue: .main
+        ) { [weak self] _ in
+            let newGoal = UserDefaults.standard.object(forKey: "readingGoal") as? Int ?? 10
+            if self?.readingGoal != newGoal {
+                self?.readingGoal = newGoal
+                self?.updateProgress()
+            }
+        }
+    }
+    
+    func updateReadingGoal(_ newGoal: Int) {
+        readingGoal = newGoal
+        UserDefaults.standard.set(newGoal, forKey: "readingGoal")
+        updateProgress()
     }
     
     // MARK: - Helper Methods

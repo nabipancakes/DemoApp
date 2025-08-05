@@ -16,6 +16,8 @@ struct BarcodeScannerView: View {
     @State private var showingScanner = false
     @State private var scannedBook: DemoApp.Book?
     @State private var showingBookResult = false
+    @State private var addedToCatalog = false
+    @State private var showingSuccessAlert = false
     
     var body: some View {
         NavigationView {
@@ -25,10 +27,21 @@ struct BarcodeScannerView: View {
                         .padding()
                     
                     HStack {
-                        Button("Add to Catalog") {
-                            addBookToCatalog(book)
+                        if addedToCatalog {
+                            VStack {
+                                Image(systemName: "checkmark.circle.fill")
+                                    .foregroundColor(.green)
+                                    .font(.title2)
+                                Text("Added to Catalog!")
+                                    .foregroundColor(.green)
+                                    .font(.headline)
+                            }
+                        } else {
+                            Button("Add to Catalog") {
+                                addBookToCatalog(book)
+                            }
+                            .buttonStyle(.borderedProminent)
                         }
-                        .buttonStyle(.borderedProminent)
                         
                         Button("Scan Another") {
                             resetScanner()
@@ -79,6 +92,11 @@ struct BarcodeScannerView: View {
                     handleScannedCode(newValue)
                 }
             }
+            .alert("Success!", isPresented: $showingSuccessAlert) {
+                Button("OK") { }
+            } message: {
+                Text("Book has been successfully added to the catalog with all available information including title, author, page count, and cover image.")
+            }
         }
     }
     
@@ -106,16 +124,27 @@ struct BarcodeScannerView: View {
     }
     
     private func addBookToCatalog(_ book: DemoApp.Book) {
-        _ = coreDataManager.createBook(from: book)
-        // Add to daily book service seed books
-        DailyBookService.shared.addBookToSeedBooks(book)
-        resetScanner()
+        // Create the book in Core Data
+        let coreDataBook = coreDataManager.createBook(from: book)
+        coreDataBook.isbn = scannedCode // Store the scanned ISBN
+        coreDataManager.save()
+        
+        // Show success feedback
+        addedToCatalog = true
+        showingSuccessAlert = true
+        
+        // Reset after a delay to allow user to see the success message
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+            resetScanner()
+        }
     }
     
     private func resetScanner() {
         scannedCode = ""
         scannedBook = nil
         openLibraryService.error = nil
+        addedToCatalog = false
+        showingSuccessAlert = false
     }
 }
 

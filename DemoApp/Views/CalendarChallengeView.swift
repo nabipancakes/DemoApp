@@ -70,26 +70,22 @@ struct MonthlyBookCard: View {
                 
                 Spacer()
                 
-                if let coverURL = monthlyBook.coverURL, !coverURL.isEmpty {
-                    AsyncImage(url: URL(string: coverURL)) { image in
-                        image
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                    } placeholder: {
-                        Image(systemName: "book.closed")
-                            .font(.system(size: 40))
-                            .foregroundColor(.gray)
-                    }
-                    .frame(width: 80, height: 120)
-                    .cornerRadius(8)
-                } else {
-                    Image(systemName: "book.closed")
-                        .font(.system(size: 40))
-                        .foregroundColor(.gray)
-                        .frame(width: 80, height: 120)
-                        .background(Color.gray.opacity(0.2))
-                        .cornerRadius(8)
-                }
+                // Create a temporary Book object for the cover view
+                BookCoverView(
+                    book: Book(
+                        id: UUID().uuidString,
+                        title: monthlyBook.title ?? "Unknown Title",
+                        authors: [monthlyBook.author ?? "Unknown Author"],
+                        description: monthlyBook.bookDescription,
+                        thumbnail: monthlyBook.coverURL,
+                        pageCount: nil,
+                        categories: nil,
+                        price: nil,
+                        ageRange: nil
+                    ),
+                    width: 80,
+                    height: 120
+                )
             }
             
             if let description = monthlyBook.bookDescription, !description.isEmpty {

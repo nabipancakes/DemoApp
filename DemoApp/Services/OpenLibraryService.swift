@@ -154,7 +154,7 @@ class OpenLibraryService: ObservableObject {
     
     private func getCoverURL(for coverId: Int?) -> String? {
         guard let coverId = coverId else { return nil }
-        return "https://covers.openlibrary.org/b/id/\(coverId)-M.jpg"
+        return "https://covers.openlibrary.org/b/id/\(coverId)-L.jpg"
     }
 }
 
