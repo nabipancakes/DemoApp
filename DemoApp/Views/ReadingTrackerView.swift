@@ -198,11 +198,11 @@ struct ReadingLogRow: View {
     var body: some View {
         HStack {
             VStack(alignment: .leading, spacing: 4) {
-                Text(readingLog.book?.title ?? "Unknown Book")
+                Text(readingLog.book?.toBook().title ?? "Unknown Book")
                     .font(.subheadline)
                     .fontWeight(.medium)
                 
-                Text("by \(readingLog.book?.authors?.joined(separator: ", ") ?? "Unknown Author")")
+                Text("by \(readingLog.book?.toBook().authors.joined(separator: ", ") ?? "Unknown Author")")
                     .font(.caption)
                     .foregroundColor(.secondary)
                 
@@ -257,74 +257,7 @@ struct EmptyReadingLogsView: View {
     }
 }
 
-struct AddReadingLogView: View {
-    @ObservedObject private var readingTracker = ReadingTrackerService.shared
-    @ObservedObject private var dailyBookService = DailyBookService.shared
-    @Environment(\.dismiss) var dismiss
-    
-    @State private var selectedBook: DemoApp.Book?
-    @State private var dateFinished = Date()
-    @State private var notes = ""
-    @State private var showingBookPicker = false
-    
-    var body: some View {
-        NavigationView {
-            Form {
-                Section(header: Text("Book")) {
-                    if let selectedBook = selectedBook {
-                        HStack {
-                            VStack(alignment: .leading) {
-                                Text(selectedBook.title)
-                                    .font(.headline)
-                                Text("by \(selectedBook.authors.joined(separator: ", "))")
-                                    .font(.subheadline)
-                                    .foregroundColor(.secondary)
-                            }
-                            Spacer()
-                            Button("Change") {
-                                showingBookPicker = true
-                            }
-                            .font(.caption)
-                        }
-                    } else {
-                        Button("Select Book") {
-                            showingBookPicker = true
-                        }
-                    }
-                }
-                
-                Section(header: Text("Details")) {
-                    DatePicker("Date Finished", selection: $dateFinished, displayedComponents: .date)
-                    
-                    TextField("Notes (optional)", text: $notes, axis: .vertical)
-                        .lineLimit(3...6)
-                }
-                
-                Section {
-                    Button("Add Reading Log") {
-                        if let book = selectedBook {
-                            readingTracker.addReadingLog(for: book, dateFinished: dateFinished, notes: notes.isEmpty ? nil : notes)
-                            dismiss()
-                        }
-                    }
-                    .disabled(selectedBook == nil)
-                }
-            }
-            .navigationTitle("Add Reading Log")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Cancel") {
-                        dismiss()
-                    }
-                }
-            }
-            .sheet(isPresented: $showingBookPicker) {
-                BookPickerView(selectedBook: $selectedBook)
-            }
-        }
-    }
-}
+
 
 struct BookPickerView: View {
     @Binding var selectedBook: DemoApp.Book?

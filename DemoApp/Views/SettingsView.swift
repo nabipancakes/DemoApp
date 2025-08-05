@@ -140,8 +140,8 @@ struct SettingsView: View {
         var csvContent = "Title,Author,Date Finished,Notes\n"
         
         for log in logs {
-            let title = log.book?.title ?? "Unknown"
-            let author = log.book?.authors?.joined(separator: ", ") ?? "Unknown"
+            let title = log.book?.toBook().title ?? "Unknown"
+            let author = log.book?.toBook().authors.joined(separator: ", ") ?? "Unknown"
             let dateFormatter = DateFormatter()
             dateFormatter.dateStyle = .short
             let date = log.dateFinished.map { dateFormatter.string(from: $0) } ?? "Unknown"

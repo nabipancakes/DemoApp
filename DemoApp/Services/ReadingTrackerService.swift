@@ -64,11 +64,11 @@ class ReadingTrackerService: ObservableObject {
         }
     }
     
-    func addReadingLog(for book: DemoApp.Book, dateFinished: Date = Date(), notes: String? = nil) {
+    func addReadingLog(for book: DemoApp.Book, dateFinished: Date = Date(), rating: Int? = nil, notes: String? = nil) {
         // First ensure the book exists in Core Data
         let coreDataBook = coreDataManager.createBook(from: book)
         
-        // Add reading log
+        // Add reading log (rating will be ignored for now until Core Data model is updated)
         coreDataManager.addReadingLog(for: coreDataBook, dateFinished: dateFinished, notes: notes)
         
         // Reload reading logs

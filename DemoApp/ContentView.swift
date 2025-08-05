@@ -15,38 +15,64 @@ struct ContentView: View {
     var body: some View {
         TabView {
             if userRole.isReader {
-                // Reader-only tabs
-                CalendarChallengeView()
+                // Reader tabs - Simplified and intuitive
+                ReaderHomeView(viewModel: viewModel)
                     .tabItem {
-                        Label("Calendar", systemImage: "calendar")
+                        Label("Home", systemImage: "house.fill")
                     }
                 
-                DailyBookView()
+                MyBooksView(viewModel: viewModel)
                     .tabItem {
-                        Label("Daily Pick", systemImage: "book.closed")
+                        Label("My Books", systemImage: "books.vertical.fill")
                     }
                 
-                ReadingTrackerView()
+                DiscoverView()
                     .tabItem {
-                        Label("Tracker", systemImage: "chart.bar")
+                        Label("Discover", systemImage: "magnifyingglass")
                     }
                 
-                CollectionView(viewModel: viewModel)
-                    .tabItem {
-                        Label("Collections", systemImage: "books.vertical")
+                NavigationView {
+                    VStack(spacing: 24) {
+                        // Support Section
+                        VStack(spacing: 16) {
+                            Text("Support The Book Diaries")
+                                .font(.title2)
+                                .fontWeight(.bold)
+                            
+                            Text("Help us keep the app running and improve your reading experience!")
+                                .font(.body)
+                                .foregroundColor(.secondary)
+                                .multilineTextAlignment(.center)
+                            
+                            NavigationLink(destination: DonationView()) {
+                                HStack {
+                                    Image(systemName: "heart.fill")
+                                    Text("Support Us")
+                                }
+                                .foregroundColor(.white)
+                                .padding()
+                                .background(Color.red)
+                                .cornerRadius(12)
+                            }
+                        }
+                        .padding()
+                        .background(Color(.systemBackground))
+                        .cornerRadius(16)
+                        .shadow(color: .black.opacity(0.1), radius: 4, x: 0, y: 2)
+                        
+                        // Settings
+                        SettingsView()
+                        
+                        Spacer()
                     }
-                
-                DonationView()
-                    .tabItem {
-                        Label("Donate", systemImage: "heart")
-                    }
-                
-                SettingsView()
-                    .tabItem {
-                        Label("Settings", systemImage: "gear")
-                    }
+                    .padding()
+                    .navigationTitle("Settings")
+                }
+                .tabItem {
+                    Label("Settings", systemImage: "gear")
+                }
             } else {
-                // Staff-only tabs
+                // Staff-only tabs - Keep existing functionality
                 BarcodeScannerView()
                     .tabItem {
                         Label("Scanner", systemImage: "barcode.viewfinder")
