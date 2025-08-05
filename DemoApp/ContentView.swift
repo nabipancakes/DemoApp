@@ -72,8 +72,13 @@ struct ContentView: View {
                     Label("Settings", systemImage: "gear")
                 }
             } else {
-                // Staff-only tabs - Keep existing functionality
-                BarcodeScannerView()
+                // Staff tabs - Enhanced and organized
+                StaffHomeView(viewModel: viewModel)
+                    .tabItem {
+                        Label("Dashboard", systemImage: "house.fill")
+                    }
+                
+                EnhancedBarcodeScannerView(viewModel: viewModel)
                     .tabItem {
                         Label("Scanner", systemImage: "barcode.viewfinder")
                     }
@@ -83,24 +88,108 @@ struct ContentView: View {
                         Label("Collections", systemImage: "books.vertical")
                     }
                 
-                MonthlyPickEditorView()
-                    .tabItem {
-                        Label("Monthly Pick", systemImage: "calendar.badge.plus")
+                NavigationView {
+                    VStack(spacing: 24) {
+                        // Quick actions for staff
+                        VStack(spacing: 16) {
+                            Text("Management Tools")
+                                .font(.title2)
+                                .fontWeight(.bold)
+                            
+                            LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 2), spacing: 16) {
+                                NavigationLink(destination: MonthlyPickEditorView()) {
+                                    StaffToolCard(
+                                        icon: "calendar.badge.plus",
+                                        title: "Monthly Pick",
+                                        subtitle: "Set featured book",
+                                        color: .purple
+                                    )
+                                }
+                                .buttonStyle(PlainButtonStyle())
+                                
+                                NavigationLink(destination: SeedImporterView()) {
+                                    StaffToolCard(
+                                        icon: "tray.full",
+                                        title: "Seed Books",
+                                        subtitle: "Manage database",
+                                        color: .orange
+                                    )
+                                }
+                                .buttonStyle(PlainButtonStyle())
+                                
+                                NavigationLink(destination: StaffAnalyticsView(viewModel: viewModel)) {
+                                    StaffToolCard(
+                                        icon: "chart.bar.fill",
+                                        title: "Analytics",
+                                        subtitle: "View insights",
+                                        color: .blue
+                                    )
+                                }
+                                .buttonStyle(PlainButtonStyle())
+                                
+                                NavigationLink(destination: BulkImportView()) {
+                                    StaffToolCard(
+                                        icon: "square.and.arrow.down.fill",
+                                        title: "Bulk Import",
+                                        subtitle: "Import books",
+                                        color: .green
+                                    )
+                                }
+                                .buttonStyle(PlainButtonStyle())
+                            }
+                        }
+                        .padding()
+                        .background(Color(.systemBackground))
+                        .cornerRadius(16)
+                        .shadow(color: .black.opacity(0.1), radius: 4, x: 0, y: 2)
+                        
+                        // Settings
+                        SettingsView()
+                        
+                        Spacer()
                     }
-                
-                SeedImporterView()
-                    .tabItem {
-                        Label("Seed Books", systemImage: "tray.full")
-                    }
-                
-                SettingsView()
-                    .tabItem {
-                        Label("Settings", systemImage: "gear")
-                    }
+                    .padding()
+                    .navigationTitle("Tools")
+                }
+                .tabItem {
+                    Label("Tools", systemImage: "wrench.and.screwdriver.fill")
+                }
             }
         }
         .accentColor(selectedTheme.accentColor)
         .preferredColorScheme(selectedTheme.colorScheme)
         .background(selectedTheme.backgroundColor)
+    }
+}
+
+// MARK: - Staff Tool Card
+struct StaffToolCard: View {
+    let icon: String
+    let title: String
+    let subtitle: String
+    let color: Color
+    
+    var body: some View {
+        VStack(spacing: 12) {
+            Image(systemName: icon)
+                .font(.title)
+                .foregroundColor(color)
+            
+            VStack(spacing: 4) {
+                Text(title)
+                    .font(.subheadline)
+                    .fontWeight(.semibold)
+                    .foregroundColor(.primary)
+                
+                Text(subtitle)
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                    .multilineTextAlignment(.center)
+            }
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 20)
+        .background(Color(.secondarySystemBackground))
+        .cornerRadius(12)
     }
 }
