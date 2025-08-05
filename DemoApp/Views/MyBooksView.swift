@@ -33,15 +33,14 @@ struct MyBooksView: View {
                 // Custom Tab Selector
                 TabSelectorView()
                 
-                // Content
-                TabView(selection: $selectedTab) {
-                    ReadingLogTabView()
-                        .tag(MyBooksTab.readingLog)
-                    
-                    CollectionsTabView()
-                        .tag(MyBooksTab.collections)
+                // Content based on selected tab
+                Group {
+                    if selectedTab == .readingLog {
+                        ReadingLogTabView()
+                    } else {
+                        CollectionsTabView()
+                    }
                 }
-                .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
             }
             .navigationTitle("My Books")
             .toolbar {

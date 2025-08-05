@@ -17,6 +17,8 @@ struct StaffHomeView: View {
     @State private var showingMonthlyPicker = false
     @State private var showingBulkImport = false
     @State private var showingAnalytics = false
+    @State private var showingCollections = false
+    @State private var showingSeedBooks = false
     
     var body: some View {
         NavigationView {
@@ -71,6 +73,30 @@ struct StaffHomeView: View {
             }
             .sheet(isPresented: $showingAnalytics) {
                 StaffAnalyticsView(viewModel: viewModel)
+            }
+            .sheet(isPresented: $showingCollections) {
+                NavigationView {
+                    CollectionView(viewModel: viewModel)
+                        .toolbar {
+                            ToolbarItem(placement: .navigationBarTrailing) {
+                                Button("Done") {
+                                    showingCollections = false
+                                }
+                            }
+                        }
+                }
+            }
+            .sheet(isPresented: $showingSeedBooks) {
+                NavigationView {
+                    SeedImporterView()
+                        .toolbar {
+                            ToolbarItem(placement: .navigationBarTrailing) {
+                                Button("Done") {
+                                    showingSeedBooks = false
+                                }
+                            }
+                        }
+                }
             }
         }
     }
@@ -149,7 +175,7 @@ struct StaffHomeView: View {
                     title: "Manage Collections",
                     subtitle: "Organize book collections",
                     color: .green,
-                    action: { /* Navigate to collections */ }
+                    action: { showingCollections = true }
                 )
                 
                 StaffActionCard(
@@ -157,7 +183,7 @@ struct StaffHomeView: View {
                     title: "Seed Books",
                     subtitle: "Manage book database",
                     color: .orange,
-                    action: { /* Navigate to seed books */ }
+                    action: { showingSeedBooks = true }
                 )
             }
         }
@@ -210,27 +236,12 @@ struct StaffHomeView: View {
                 .foregroundColor(selectedTheme.primaryColor)
             }
             
-            VStack(spacing: 8) {
-                StaffActivityRow(
-                    icon: "plus.circle.fill",
-                    title: "Added 5 books via barcode scan",
-                    time: "2 hours ago",
-                    color: .green
-                )
-                
-                StaffActivityRow(
-                    icon: "calendar.badge.plus",
-                    title: "Updated monthly pick for December",
-                    time: "1 day ago",
-                    color: .blue
-                )
-                
-                StaffActivityRow(
-                    icon: "folder.badge.plus",
-                    title: "Created 'Holiday Reads' collection",
-                    time: "2 days ago",
-                    color: .purple
-                )
+            VStack(spacing: 12) {
+                Text("No recent activity")
+                    .font(.body)
+                    .foregroundColor(.secondary)
+                    .frame(maxWidth: .infinity)
+                    .padding()
             }
         }
         .padding()
@@ -260,22 +271,22 @@ struct StaffHomeView: View {
             HStack(spacing: 16) {
                 AnalyticsCard(
                     title: "Total Books",
-                    value: "\(getTotalBooksCount())",
-                    change: "+12 this week",
+                    value: "0",
+                    change: "",
                     color: .blue
                 )
                 
                 AnalyticsCard(
                     title: "Active Readers",
                     value: "\(readingTracker.readingLogs.count)",
-                    change: "+3 this week",
+                    change: "",
                     color: .green
                 )
                 
                 AnalyticsCard(
                     title: "Collections",
                     value: "\(viewModel.collections.count)",
-                    change: "+2 this week",
+                    change: "",
                     color: .purple
                 )
             }
@@ -288,8 +299,7 @@ struct StaffHomeView: View {
     
     // MARK: - Helper Functions
     private func getTotalBooksCount() -> Int {
-        // This would typically come from your database
-        return 150 // Placeholder
+        return 0 // No fake data
     }
 }
 

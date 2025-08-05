@@ -99,18 +99,18 @@ struct StaffAnalyticsView: View {
             LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 2), spacing: 16) {
                 MetricCard(
                     title: "Total Books",
-                    value: "\(getTotalBooksCount())",
-                    change: "+12",
-                    changeType: .positive,
+                    value: "0",
+                    change: "",
+                    changeType: .neutral,
                     icon: "books.vertical.fill",
                     color: .blue
                 )
                 
                 MetricCard(
                     title: "Active Readers",
-                    value: "\(getActiveReadersCount())",
-                    change: "+5",
-                    changeType: .positive,
+                    value: "0",
+                    change: "",
+                    changeType: .neutral,
                     icon: "person.2.fill",
                     color: .green
                 )
@@ -118,8 +118,8 @@ struct StaffAnalyticsView: View {
                 MetricCard(
                     title: "Books Read",
                     value: "\(readingTracker.readingLogs.count)",
-                    change: "+8",
-                    changeType: .positive,
+                    change: "",
+                    changeType: .neutral,
                     icon: "checkmark.circle.fill",
                     color: .purple
                 )
@@ -127,8 +127,8 @@ struct StaffAnalyticsView: View {
                 MetricCard(
                     title: "Collections",
                     value: "\(viewModel.collections.count)",
-                    change: "+2",
-                    changeType: .positive,
+                    change: "",
+                    changeType: .neutral,
                     icon: "folder.fill",
                     color: .orange
                 )
@@ -156,33 +156,14 @@ struct StaffAnalyticsView: View {
                     .foregroundColor(.secondary)
             }
             
-            // Simple chart representation (would use Swift Charts in real implementation)
-            VStack(spacing: 8) {
-                ForEach(getChartData(), id: \.date) { dataPoint in
-                    HStack {
-                        Text(dataPoint.label)
-                            .font(.caption)
-                            .frame(width: 60, alignment: .leading)
-                        
-                        GeometryReader { geometry in
-                            HStack(spacing: 0) {
-                                Rectangle()
-                                    .fill(Color.blue)
-                                    .frame(width: geometry.size.width * dataPoint.percentage)
-                                
-                                Spacer()
-                            }
-                        }
-                        .frame(height: 20)
-                        
-                        Text("\(dataPoint.value)")
-                            .font(.caption)
-                            .fontWeight(.medium)
-                            .frame(width: 30, alignment: .trailing)
-                    }
-                }
+            // No data available
+            VStack(spacing: 12) {
+                Text("No reading activity data available")
+                    .font(.body)
+                    .foregroundColor(.secondary)
+                    .frame(maxWidth: .infinity)
+                    .padding()
             }
-            .padding(.vertical, 8)
         }
         .padding()
         .background(Color(.systemBackground))
@@ -199,43 +180,11 @@ struct StaffAnalyticsView: View {
                 .fontWeight(.semibold)
             
             VStack(spacing: 12) {
-                ForEach(getMostReadBooks(), id: \.title) { bookData in
-                    HStack(spacing: 12) {
-                        // Rank badge
-                        Text("\(bookData.rank)")
-                            .font(.caption)
-                            .fontWeight(.bold)
-                            .foregroundColor(.white)
-                            .frame(width: 24, height: 24)
-                            .background(rankColor(bookData.rank))
-                            .clipShape(Circle())
-                        
-                        VStack(alignment: .leading, spacing: 2) {
-                            Text(bookData.title)
-                                .font(.subheadline)
-                                .fontWeight(.medium)
-                                .lineLimit(1)
-                            
-                            Text("by \(bookData.author)")
-                                .font(.caption)
-                                .foregroundColor(.secondary)
-                        }
-                        
-                        Spacer()
-                        
-                        VStack(alignment: .trailing, spacing: 2) {
-                            Text("\(bookData.readCount)")
-                                .font(.subheadline)
-                                .fontWeight(.semibold)
-                                .foregroundColor(.blue)
-                            
-                            Text("reads")
-                                .font(.caption2)
-                                .foregroundColor(.secondary)
-                        }
-                    }
-                    .padding(.vertical, 4)
-                }
+                Text("No reading data available")
+                    .font(.body)
+                    .foregroundColor(.secondary)
+                    .frame(maxWidth: .infinity)
+                    .padding()
             }
         }
         .padding()
@@ -304,21 +253,21 @@ struct StaffAnalyticsView: View {
             VStack(spacing: 16) {
                 EngagementMetric(
                     title: "Average Books per Reader",
-                    value: String(format: "%.1f", getAverageBooksPerReader()),
+                    value: "0",
                     icon: "person.crop.circle.fill",
                     color: .blue
                 )
                 
                 EngagementMetric(
                     title: "Most Active Reader",
-                    value: getMostActiveReaderName(),
+                    value: "None",
                     icon: "star.fill",
                     color: .yellow
                 )
                 
                 EngagementMetric(
                     title: "Reading Goal Completion",
-                    value: "\(getGoalCompletionRate())%",
+                    value: "0%",
                     icon: "target",
                     color: .green
                 )

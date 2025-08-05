@@ -15,6 +15,8 @@ struct ReaderHomeView: View {
     @AppStorage("theme") private var selectedTheme: AppTheme = .classic
     @State private var showingAddLog = false
     @State private var showingGoalEditor = false
+    @State private var selectedTab = 0 // For tab navigation
+    @State private var showingDonation = false
     
     var body: some View {
         NavigationView {
@@ -219,14 +221,15 @@ struct ReaderHomeView: View {
                     showingAddLog = true
                 }
                 
-                QuickActionButton(
-                    icon: "books.vertical.fill",
-                    title: "My Collections",
-                    subtitle: "Organize your books",
-                    color: .purple
-                ) {
-                    // This will be handled by tab navigation
+                NavigationLink(destination: MyBooksView(viewModel: viewModel)) {
+                    QuickActionCard(
+                        icon: "books.vertical.fill",
+                        title: "My Collections",
+                        subtitle: "Organize your books",
+                        color: .purple
+                    )
                 }
+                .buttonStyle(PlainButtonStyle())
                 
                 QuickActionButton(
                     icon: "target",
@@ -237,14 +240,15 @@ struct ReaderHomeView: View {
                     showingGoalEditor = true
                 }
                 
-                QuickActionButton(
-                    icon: "heart.fill",
-                    title: "Support Us",
-                    subtitle: "Help keep the app running",
-                    color: .red
-                ) {
-                    // This will be handled by tab navigation
+                NavigationLink(destination: DonationView()) {
+                    QuickActionCard(
+                        icon: "heart.fill",
+                        title: "Support Us",
+                        subtitle: "Help keep the app running",
+                        color: .red
+                    )
                 }
+                .buttonStyle(PlainButtonStyle())
             }
         }
         .padding()
@@ -387,6 +391,35 @@ struct QuickActionButton: View {
             .cornerRadius(12)
         }
         .buttonStyle(PlainButtonStyle())
+    }
+}
+
+struct QuickActionCard: View {
+    let icon: String
+    let title: String
+    let subtitle: String
+    let color: Color
+    
+    var body: some View {
+        VStack(spacing: 8) {
+            Image(systemName: icon)
+                .font(.title2)
+                .foregroundColor(color)
+            
+            Text(title)
+                .font(.subheadline)
+                .fontWeight(.medium)
+                .foregroundColor(.primary)
+            
+            Text(subtitle)
+                .font(.caption2)
+                .foregroundColor(.secondary)
+                .multilineTextAlignment(.center)
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 16)
+        .background(Color(.secondarySystemBackground))
+        .cornerRadius(12)
     }
 }
 
