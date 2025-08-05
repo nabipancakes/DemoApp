@@ -2,7 +2,7 @@
 //  CollectionBarcodeScannerView.swift
 //  TheBookDiaries
 //
-//  Created by AI Assistant on 6/25/25.
+//  Created by Benjamin Guo on 6/25/25.
 //
 
 import SwiftUI

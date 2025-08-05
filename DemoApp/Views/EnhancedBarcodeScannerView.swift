@@ -2,7 +2,7 @@
 //  EnhancedBarcodeScannerView.swift
 //  TheBookDiaries
 //
-//  Created by Stephanie Shen on 6/20/25.
+//  Created by Benjamin Guo on 6/20/25.
 //
 
 import SwiftUI

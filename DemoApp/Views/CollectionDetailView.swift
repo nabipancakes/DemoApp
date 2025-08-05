@@ -2,7 +2,7 @@
 //  CollectionDetailView.swift
 //  DemoApp
 //
-//  Created by Stephanie Shen on 6/18/25.
+//  Created by Benjamin Guo on 6/18/25.
 //
 
 import SwiftUI

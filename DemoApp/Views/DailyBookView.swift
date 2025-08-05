@@ -2,7 +2,7 @@
 //  DailyBookView.swift
 //  TheBookDiaries
 //
-//  Created by Stephanie Shen on 4/15/25.
+//  Created by Benjamin Guo on 4/15/25.
 //
 
 import SwiftUI
