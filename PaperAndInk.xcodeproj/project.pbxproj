@@ -28,26 +28,26 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		1C7CC76F2DE632A400A5F3CD /* DemoApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DemoApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		1C7CC77C2DE632A600A5F3CD /* DemoAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DemoAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		1C7CC7862DE632A600A5F3CD /* DemoAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DemoAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		1C7CC76F2DE632A400A5F3CD /* PaperAndInk.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PaperAndInk.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1C7CC77C2DE632A600A5F3CD /* PaperAndInkTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PaperAndInkTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		1C7CC7862DE632A600A5F3CD /* PaperAndInkUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PaperAndInkUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FF4276702E048C8D006778AC /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		1C7CC7712DE632A400A5F3CD /* DemoApp */ = {
+		1C7CC7712DE632A400A5F3CD /* PaperAndInk */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = DemoApp;
+			path = PaperAndInk;
 			sourceTree = "<group>";
 		};
-		1C7CC77F2DE632A600A5F3CD /* DemoAppTests */ = {
+		1C7CC77F2DE632A600A5F3CD /* PaperAndInkTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = DemoAppTests;
+			path = PaperAndInkTests;
 			sourceTree = "<group>";
 		};
-		1C7CC7892DE632A600A5F3CD /* DemoAppUITests */ = {
+		1C7CC7892DE632A600A5F3CD /* PaperAndInkUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = DemoAppUITests;
+			path = PaperAndInkUITests;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -81,9 +81,9 @@
 			isa = PBXGroup;
 			children = (
 				FF4276702E048C8D006778AC /* .gitignore */,
-				1C7CC7712DE632A400A5F3CD /* DemoApp */,
-				1C7CC77F2DE632A600A5F3CD /* DemoAppTests */,
-				1C7CC7892DE632A600A5F3CD /* DemoAppUITests */,
+				1C7CC7712DE632A400A5F3CD /* PaperAndInk */,
+				1C7CC77F2DE632A600A5F3CD /* PaperAndInkTests */,
+				1C7CC7892DE632A600A5F3CD /* PaperAndInkUITests */,
 				1C7CC7702DE632A400A5F3CD /* Products */,
 			);
 			sourceTree = "<group>";
@@ -91,9 +91,9 @@
 		1C7CC7702DE632A400A5F3CD /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				1C7CC76F2DE632A400A5F3CD /* DemoApp.app */,
-				1C7CC77C2DE632A600A5F3CD /* DemoAppTests.xctest */,
-				1C7CC7862DE632A600A5F3CD /* DemoAppUITests.xctest */,
+				1C7CC76F2DE632A400A5F3CD /* PaperAndInk.app */,
+				1C7CC77C2DE632A600A5F3CD /* PaperAndInkTests.xctest */,
+				1C7CC7862DE632A600A5F3CD /* PaperAndInkUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -101,7 +101,7 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		1C7CC76E2DE632A400A5F3CD /* DemoApp */ = {
+		1C7CC76E2DE632A400A5F3CD /* PaperAndInk */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1C7CC7902DE632A600A5F3CD /* Build configuration list for PBXNativeTarget "PaperAndInk" */;
 			buildPhases = (
@@ -114,16 +114,16 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				1C7CC7712DE632A400A5F3CD /* DemoApp */,
+				1C7CC7712DE632A400A5F3CD /* PaperAndInk */,
 			);
 			name = PaperAndInk;
 			packageProductDependencies = (
 			);
 			productName = PaperAndInk;
-			productReference = 1C7CC76F2DE632A400A5F3CD /* DemoApp.app */;
+			productReference = 1C7CC76F2DE632A400A5F3CD /* PaperAndInk.app */;
 			productType = "com.apple.product-type.application";
 		};
-		1C7CC77B2DE632A600A5F3CD /* DemoAppTests */ = {
+		1C7CC77B2DE632A600A5F3CD /* PaperAndInkTests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1C7CC7932DE632A600A5F3CD /* Build configuration list for PBXNativeTarget "PaperAndInkTests" */;
 			buildPhases = (
@@ -137,16 +137,16 @@
 				1C7CC77E2DE632A600A5F3CD /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				1C7CC77F2DE632A600A5F3CD /* DemoAppTests */,
+				1C7CC77F2DE632A600A5F3CD /* PaperAndInkTests */,
 			);
 			name = PaperAndInkTests;
 			packageProductDependencies = (
 			);
 			productName = PaperAndInkTests;
-			productReference = 1C7CC77C2DE632A600A5F3CD /* DemoAppTests.xctest */;
+			productReference = 1C7CC77C2DE632A600A5F3CD /* PaperAndInkTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		1C7CC7852DE632A600A5F3CD /* DemoAppUITests */ = {
+		1C7CC7852DE632A600A5F3CD /* PaperAndInkUITests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1C7CC7962DE632A600A5F3CD /* Build configuration list for PBXNativeTarget "PaperAndInkUITests" */;
 			buildPhases = (
@@ -160,13 +160,13 @@
 				1C7CC7882DE632A600A5F3CD /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				1C7CC7892DE632A600A5F3CD /* DemoAppUITests */,
+				1C7CC7892DE632A600A5F3CD /* PaperAndInkUITests */,
 			);
 			name = PaperAndInkUITests;
 			packageProductDependencies = (
 			);
 			productName = PaperAndInkUITests;
-			productReference = 1C7CC7862DE632A600A5F3CD /* DemoAppUITests.xctest */;
+			productReference = 1C7CC7862DE632A600A5F3CD /* PaperAndInkUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
@@ -206,9 +206,9 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				1C7CC76E2DE632A400A5F3CD /* DemoApp */,
-				1C7CC77B2DE632A600A5F3CD /* DemoAppTests */,
-				1C7CC7852DE632A600A5F3CD /* DemoAppUITests */,
+				1C7CC76E2DE632A400A5F3CD /* PaperAndInk */,
+				1C7CC77B2DE632A600A5F3CD /* PaperAndInkTests */,
+				1C7CC7852DE632A600A5F3CD /* PaperAndInkUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -265,12 +265,12 @@
 /* Begin PBXTargetDependency section */
 		1C7CC77E2DE632A600A5F3CD /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 1C7CC76E2DE632A400A5F3CD /* DemoApp */;
+			target = 1C7CC76E2DE632A400A5F3CD /* PaperAndInk */;
 			targetProxy = 1C7CC77D2DE632A600A5F3CD /* PBXContainerItemProxy */;
 		};
 		1C7CC7882DE632A600A5F3CD /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 1C7CC76E2DE632A400A5F3CD /* DemoApp */;
+			target = 1C7CC76E2DE632A400A5F3CD /* PaperAndInk */;
 			targetProxy = 1C7CC7872DE632A600A5F3CD /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
