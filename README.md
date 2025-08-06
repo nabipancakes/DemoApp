@@ -1,213 +1,97 @@
-# Book-Diaries Reader Companion App
+# The Book Diaries
 
-A comprehensive iOS app for book lovers to track reading progress, discover new books, and participate in reading challenges.
+A comprehensive iOS application for personal reading management, book discovery, and reading progress tracking. The app provides role-based functionality for both individual readers and library/bookstore staff members.
 
-## 🚀 Features Implemented
+## Core Features
 
-### 📅 Reading Calendar (Monthly Challenge)
-- **CalendarChallengeService**: Singleton service managing monthly book selections
-- **MonthlyBook**: Core Data entity for storing monthly picks
-- **CalendarChallengeView**: UI for viewing and managing monthly challenges
-- **MonthlyPickEditorView**: Staff interface for setting monthly picks
+### Reading Management
+- **Personal Reading Logs**: Track completed books with completion dates, ratings, and personal notes
+- **Reading List Management**: Maintain a curated list of books to read
+- **Collection Organization**: Create and manage custom book collections
+- **Reading Goal Tracking**: Set and monitor annual reading targets
 
-### 📖 Rotating Daily Book Recommendations
-- **DailyBookService**: Service that returns different books every 24 hours based on date seed
-- **SeedBooks.json**: Bundled JSON file with 10 classic books
-- **DailyBookView**: UI for displaying daily book recommendations
-- **SeedImporterView**: Staff interface for managing seed books
+### Book Discovery
+- **Daily Book Recommendations**: Algorithm-driven daily book suggestions from curated seed data
+- **Monthly Reading Challenges**: Participation in community-wide monthly book selections
+- **Search and Scan Integration**: ISBN-based book lookup with barcode scanning capability
 
-### 🏆 Reading Tracker
-- **ReadingTrackerService**: Manages reading logs and progress tracking
-- **ReadingLog**: Core Data entity for tracking completed books
-- **ReadingTrackerView**: UI for viewing reading progress and logs
-- **ChecklistProgress**: Struct for tracking completion percentages
+### Staff Administration
+- **Enhanced Barcode Scanner**: Batch book scanning with collection integration and CSV export
+- **Monthly Pick Management**: Administrative interface for setting community reading challenges
+- **Reading Analytics**: Dashboard with user engagement metrics and book catalog statistics
+- **Seed Book Management**: Curation of the daily recommendation algorithm database
 
-### 🗂 Role-based Sections
-- **UserRole**: Enum for `.reader` and `.staff` roles
-- **AppStorage**: Persistence for role and theme preferences
-- **Reader Tabs**: Calendar, Daily Pick, Tracker, Donate, Settings
-- **Staff Tabs**: Book Scanner, Monthly Pick Editor, Seed Importer
+## Technical Architecture
 
-### 📷 Staff Book Scanner
-- **BarcodeScannerView**: Enhanced scanner with OpenLibrary API integration
-- **OpenLibraryService**: Service for looking up books by ISBN
-- **ScannerView**: Camera interface for barcode scanning
-- **EAN-13, ISBN-10/13**: Supported barcode formats
+### Data Persistence
+- **Core Data Framework**: Local database management for reading logs, book metadata, and user collections
+- **UserDefaults Integration**: Lightweight storage for user preferences and reading list data
+- **Data Export Functionality**: CSV export capabilities for reading data and scan results
 
-### 💳 Direct Donation
-- **DonationService**: Stub service with Apple Pay and Stripe integration
-- **DonationView**: UI for donation amounts and payment methods
-- **ApplePayView**: Apple Pay payment interface
-- **StripePaymentView**: Credit card payment interface
+### External Integrations
+- **OpenLibrary API**: Primary book metadata retrieval service
+- **Google Books API**: Secondary book information source and cover image provider
+- **Barcode Recognition**: AVFoundation-based ISBN scanning with EAN-13 and ISBN-10/13 support
 
-### 🎨 Theme Support
-- **AppTheme**: Enum with `.classic`, `.midnight`, `.sepia` themes
-- **AppStorage**: Theme persistence
-- **ColorScheme**: Dynamic theme switching
-- **SettingsView**: Theme selection interface
+### User Interface
+- **SwiftUI Framework**: Modern declarative UI implementation
+- **Role-Based Navigation**: Adaptive interface based on user role (reader/staff)
+- **Theme System**: Multiple visual themes with persistent user preferences
+- **Accessibility Support**: VoiceOver and accessibility identifier integration
 
-### ✅ Books Checklist (Completion)
-- **isRead**: Computed property for book completion status
-- **ChecklistProgress**: Progress tracking structure
-- **ReadingTrackerService**: Integration with reading logs
+## System Requirements
 
-## 🗄️ Persistence
+- iOS 17.0 or later
+- Xcode 15.0 or later for development
+- Swift 5.9 or later
+- Camera access required for barcode scanning functionality
 
-### Core Data Model
-- **Book**: Main book entity with relationships to ReadingLog
-- **ReadingLog**: Tracks when books were completed
-- **MonthlyBook**: Stores monthly challenge selections
+## Application Structure
 
-### Core Data Manager
-- **CoreDataManager**: Singleton for all Core Data operations
-- **CRUD Operations**: Full create, read, update, delete support
-- **Migration Support**: Lightweight migration for schema changes
+### Reader Interface
+- **Home Dashboard**: Reading statistics, recent activity, and quick actions
+- **My Books**: Unified view of reading logs, reading list, and collections
+- **Discover**: Daily recommendations and monthly challenges
+- **Settings**: Theme preferences and data management
 
-## 🔬 Testing
+### Staff Interface  
+- **Dashboard**: Analytics overview and administrative quick actions
+- **Enhanced Scanner**: Batch book processing with collection management
+- **Monthly Pick Editor**: Community reading challenge administration
+- **Settings**: Role management and system configuration
 
-### Unit Tests
-- **DailyBookServiceTests**: Tests rotation logic and deterministic selection
-- **ReadingTrackerTests**: Tests progress calculation and reading logs
-- **DonationServiceTests**: Tests payment processing and error handling
+## Data Management
 
-### UI Tests
-- **RoleSwitchingUITests**: Tests role-based navigation and persistence
-- **Theme Switching**: Tests theme selection and application
-- **Tab Visibility**: Verifies correct tabs for each role
+### Local Storage
+All user data is stored locally on the device using Core Data and UserDefaults. No personal reading information is transmitted to external servers.
 
-## 🏗️ Architecture
+### Data Clearing
+Administrative function to reset all application data including reading logs, collections, user preferences, and cached book information.
 
-### Services (Singleton Pattern)
-- `CalendarChallengeService`: Monthly book management
-- `DailyBookService`: Daily book rotation
-- `ReadingTrackerService`: Progress tracking
-- `DonationService`: Payment processing
-- `OpenLibraryService`: Book lookup API
-- `CoreDataManager`: Data persistence
+### Export Capabilities
+CSV export functionality for reading logs and scan results, compatible with spreadsheet applications and external data analysis tools.
 
-### Views (MVVM Pattern)
-- **Reader Views**: Calendar, Daily Pick, Tracker, Donate, Settings
-- **Staff Views**: Scanner, Monthly Pick Editor, Seed Importer
-- **Shared Views**: Settings, Book Cards, Progress Indicators
+## Security and Privacy
 
-### Models
-- **Book**: Codable struct for API responses
-- **UserRole**: Enum for role management
-- **AppTheme**: Enum for theme management
-- **Core Data Entities**: Book, ReadingLog, MonthlyBook
+- Local-only data storage with no cloud transmission
+- User-controlled data retention and deletion
+- Role-based access control with password protection for staff functions
+- Secure handling of external API requests
 
-## 🚀 Getting Started
+## Development Standards
 
-### Prerequisites
-- Xcode 15.0+
-- iOS 17.0+
-- Swift 5.9+
+The application follows iOS development best practices including:
+- MVVM architectural pattern
+- Combine framework for reactive programming
+- Comprehensive unit and UI test coverage
+- SwiftUI best practices and Human Interface Guidelines compliance
+- Accessibility standards implementation
 
-### Installation
-1. Clone the repository
-2. Open `DemoApp.xcodeproj` in Xcode
-3. Build and run the project
+## Testing Framework
 
-### Core Data Setup
-The app automatically creates the Core Data stack on first launch. No additional setup required.
+- Unit tests for core business logic and data services
+- UI tests for user interaction flows and role switching
+- Service layer testing for API integration and data persistence
+- Performance testing for Core Data operations
 
-### Testing
-Run tests with `⌘+U` in Xcode:
-- Unit tests verify service logic
-- UI tests verify role switching and navigation
-
-## 📱 Usage
-
-### Reader Mode
-1. **Calendar**: View and participate in monthly reading challenges
-2. **Daily Pick**: Discover new books with daily recommendations
-3. **Tracker**: Log completed books and track reading progress
-4. **Donate**: Support the app with secure payments
-5. **Settings**: Switch themes and manage preferences
-
-### Staff Mode
-1. **Scanner**: Scan book barcodes to add to catalog
-2. **Monthly Pick**: Set monthly reading challenges
-3. **Seed Books**: Manage daily recommendation books
-4. **Settings**: Access staff-specific settings
-
-## 🔧 Configuration
-
-### Role Switching
-- Navigate to Settings → User Role → Switch Role
-- Choose between Reader and Staff roles
-- Changes persist across app launches
-
-### Theme Selection
-- Navigate to Settings → Appearance → Theme
-- Choose from Classic, Midnight, or Sepia themes
-- Changes apply immediately
-
-### API Integration
-- **OpenLibrary API**: Book lookup by ISBN
-- **Google Books API**: Fallback for book information
-- **Stub Payment APIs**: Simulated Apple Pay and Stripe
-
-## 📊 Data Flow
-
-### Reading Progress
-1. User marks book as read in Daily Pick or Tracker
-2. `ReadingTrackerService` creates `ReadingLog` entry
-3. Progress percentage updates automatically
-4. Checklist completion status updates
-
-### Monthly Challenges
-1. Staff sets monthly book in Monthly Pick Editor
-2. `CalendarChallengeService` stores in Core Data
-3. Readers view challenge in Calendar tab
-4. Progress tracked against monthly goal
-
-### Daily Recommendations
-1. `DailyBookService` loads seed books from JSON
-2. Date-based hash determines daily book
-3. Same date always returns same book
-4. Staff can manage seed books via Seed Importer
-
-## 🔒 Security
-
-### Payment Processing
-- Stub implementations for Apple Pay and Stripe
-- No real payment processing in demo
-- Secure token handling for payment methods
-
-### Data Privacy
-- All data stored locally on device
-- No external data transmission
-- User controls all personal reading data
-
-## 🎯 Future Enhancements
-
-### Planned Features
-- **Cloud Sync**: iCloud integration for reading data
-- **Social Features**: Share reading progress with friends
-- **Advanced Analytics**: Detailed reading statistics
-- **Book Recommendations**: AI-powered suggestions
-- **Reading Groups**: Community book clubs
-
-### Technical Improvements
-- **Real Payment Processing**: Live Apple Pay and Stripe
-- **Push Notifications**: Daily book reminders
-- **Offline Support**: Enhanced offline functionality
-- **Performance Optimization**: Faster Core Data queries
-
-## 📄 License
-
-This project is for demonstration purposes. All book data and APIs are used in accordance with their respective terms of service.
-
-## 🤝 Contributing
-
-This is a demo project showcasing iOS development best practices. The architecture demonstrates:
-
-- **MVVM Pattern**: Clean separation of concerns
-- **Combine Framework**: Reactive programming
-- **Core Data**: Robust data persistence
-- **SwiftUI**: Modern declarative UI
-- **Unit Testing**: Comprehensive test coverage
-- **UI Testing**: Automated user interface testing
-
-The implementation follows Apple's Human Interface Guidelines and iOS development best practices. 
+This application demonstrates modern iOS development techniques while providing practical functionality for reading enthusiasts and book industry professionals.
