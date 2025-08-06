@@ -1,4 +1,4 @@
-# The Book Diaries
+# Paper&Ink - The Book Diaries Companion App
 
 A comprehensive iOS application for personal reading management, book discovery, and reading progress tracking. The app provides role-based functionality for both individual readers and library/bookstore staff members.
 
