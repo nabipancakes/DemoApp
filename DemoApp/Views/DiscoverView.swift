@@ -10,6 +10,8 @@ import SwiftUI
 struct DiscoverView: View {
     @ObservedObject private var calendarService = CalendarChallengeService.shared
     @ObservedObject private var readingTracker = ReadingTrackerService.shared
+    @ObservedObject private var dailyBookService = DailyBookService.shared
+    @ObservedObject private var readingListService = ReadingListService.shared
     @State private var selectedBooks: [Book] = []
     @State private var isLoadingRecommendations = false
     @AppStorage("theme") private var selectedTheme: AppTheme = .classic
@@ -20,6 +22,9 @@ struct DiscoverView: View {
                 VStack(spacing: 24) {
                     // Monthly Challenge Section
                     MonthlyChallengeSectionView()
+                    
+                    // Today's Pick Section
+                    TodaysPickSection()
                     
                     // Book Recommendations
                     BookRecommendationsSection()
@@ -190,6 +195,39 @@ struct DiscoverView: View {
         calendarService.loadCurrentMonthlyBook()
         loadRecommendations()
     }
+    
+    // MARK: - Today's Pick Section
+    @ViewBuilder
+    private func TodaysPickSection() -> some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text("Today's Pick")
+                .font(.headline)
+                .fontWeight(.semibold)
+            
+            if dailyBookService.isLoading {
+                ProgressView("Loading today's book...")
+                    .frame(maxWidth: .infinity)
+                    .padding()
+            } else if let dailyBook = dailyBookService.dailyBook {
+                CompactBookCard(
+                    book: dailyBook,
+                    isRead: readingTracker.isBookRead(dailyBook),
+                    onMarkAsRead: {
+                        readingTracker.addReadingLog(for: dailyBook)
+                    }
+                )
+            } else {
+                Text("No daily pick available")
+                    .foregroundColor(.secondary)
+                    .frame(maxWidth: .infinity)
+                    .padding()
+            }
+        }
+        .padding()
+        .background(Color(.systemBackground))
+        .cornerRadius(16)
+        .shadow(color: .black.opacity(0.1), radius: 4, x: 0, y: 2)
+    }
 }
 
 // MARK: - Supporting Views
@@ -312,6 +350,7 @@ struct MonthlyBookDiscoverCard: View {
 struct RecommendedBookCard: View {
     let book: Book
     @ObservedObject private var readingTracker = ReadingTrackerService.shared
+    @ObservedObject private var readingListService = ReadingListService.shared
     @State private var showingDetail = false
     
     var body: some View {
@@ -341,12 +380,13 @@ struct RecommendedBookCard: View {
                             .foregroundColor(.green)
                     }
                 } else {
-                    Button("Add to Reading List") {
-                        // This could add to a "want to read" collection
+                    Button(readingListService.isInReadingList(book) ? "In Reading List" : "Add to Reading List") {
+                        readingListService.toggleReadingListStatus(book)
                     }
                     .font(.caption2)
                     .buttonStyle(.bordered)
                     .controlSize(.mini)
+                    .foregroundColor(readingListService.isInReadingList(book) ? .orange : .blue)
                 }
             }
             .frame(width: 120)

@@ -19,6 +19,8 @@ struct StaffHomeView: View {
     @State private var showingAnalytics = false
     @State private var showingCollections = false
     @State private var showingSeedBooks = false
+    @State private var scannerShouldClearAll = false
+    @State private var scannerShouldShowBulkActions = false
     
     var body: some View {
         NavigationView {
@@ -63,7 +65,18 @@ struct StaffHomeView: View {
                 }
             }
             .sheet(isPresented: $showingBarcodeScanner) {
-                EnhancedBarcodeScannerView(viewModel: viewModel)
+                NavigationView {
+                    EnhancedBarcodeScannerView(viewModel: viewModel)
+                        .toolbar {
+                            ToolbarItem(placement: .navigationBarLeading) {
+                                Button("Done") {
+                                    showingBarcodeScanner = false
+                                }
+                            }
+                            
+
+                        }
+                }
             }
             .sheet(isPresented: $showingMonthlyPicker) {
                 EnhancedMonthlyPickEditor()

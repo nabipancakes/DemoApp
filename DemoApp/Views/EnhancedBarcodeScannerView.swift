@@ -20,6 +20,8 @@ struct EnhancedBarcodeScannerView: View {
     @State private var selectedCollection: Collection?
     @State private var showingCollectionPicker = false
     @State private var showingBulkActions = false
+    @State private var showingExportSheet = false
+    @State private var csvFileURL: URL?
     
     struct ScannedBookItem: Identifiable {
         let id = UUID()
@@ -27,18 +29,26 @@ struct EnhancedBarcodeScannerView: View {
         var book: Book?
         var status: ScanStatus
         var addedToCollection: Bool = false
+        let dateScanned: Date
         
-        enum ScanStatus {
-            case scanning
-            case found
-            case notFound
-            case error
+        init(isbn: String, book: Book? = nil, status: ScanStatus = .scanning, addedToCollection: Bool = false, dateScanned: Date = Date()) {
+            self.isbn = isbn
+            self.book = book
+            self.status = status
+            self.addedToCollection = addedToCollection
+            self.dateScanned = dateScanned
+        }
+        
+        enum ScanStatus: String {
+            case scanning = "scanning"
+            case found = "found"
+            case notFound = "not found"
+            case error = "error"
         }
     }
     
     var body: some View {
-        NavigationView {
-            VStack(spacing: 0) {
+        VStack(spacing: 0) {
                 // Header with stats
                 HeaderStatsView()
                 
@@ -53,32 +63,6 @@ struct EnhancedBarcodeScannerView: View {
             }
             .navigationTitle("Enhanced Scanner")
             .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Done") {
-                        dismiss()
-                    }
-                }
-                
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Menu {
-                        Button {
-                            showingBulkActions = true
-                        } label: {
-                            Label("Bulk Actions", systemImage: "square.stack.3d.up.fill")
-                        }
-                        
-                        Button {
-                            clearAllScans()
-                        } label: {
-                            Label("Clear All", systemImage: "trash.fill")
-                        }
-                        .foregroundColor(.red)
-                    } label: {
-                        Image(systemName: "ellipsis.circle")
-                    }
-                }
-            }
             .sheet(isPresented: $showingScanner) {
                 ScannerView(scannedCode: $currentScannedCode, onScan: handleScannedCode)
             }
@@ -88,7 +72,11 @@ struct EnhancedBarcodeScannerView: View {
             .sheet(isPresented: $showingBulkActions) {
                 BulkActionsView(scannedBooks: $scannedBooks, viewModel: viewModel)
             }
-        }
+            .sheet(isPresented: $showingExportSheet) {
+                if let url = csvFileURL {
+                    ShareSheet(activityItems: [url])
+                }
+            }
     }
     
     // MARK: - Header Stats
@@ -263,7 +251,7 @@ struct EnhancedBarcodeScannerView: View {
         // Lookup book
         openLibraryService.fetchBookByISBN(code)
             .receive(on: DispatchQueue.main)
-            .sink { [code] book in
+            .sink { [code] (book: Book?) in
                 if let book = book {
                     updateScannedBook(isbn: code, book: book, status: .found)
                 } else {
@@ -287,11 +275,13 @@ struct EnhancedBarcodeScannerView: View {
     
     private func updateScannedBook(isbn: String, book: Book?, status: ScannedBookItem.ScanStatus) {
         if let index = scannedBooks.firstIndex(where: { $0.isbn == isbn }) {
+            let originalItem = scannedBooks[index]
             scannedBooks[index] = ScannedBookItem(
                 isbn: isbn,
                 book: book,
                 status: status,
-                addedToCollection: scannedBooks[index].addedToCollection
+                addedToCollection: originalItem.addedToCollection,
+                dateScanned: originalItem.dateScanned
             )
         }
     }
@@ -308,7 +298,8 @@ struct EnhancedBarcodeScannerView: View {
                 isbn: item.isbn,
                 book: item.book,
                 status: item.status,
-                addedToCollection: true
+                addedToCollection: true,
+                dateScanned: item.dateScanned
             )
         }
     }
@@ -326,7 +317,8 @@ struct EnhancedBarcodeScannerView: View {
                         isbn: item.isbn,
                         book: item.book,
                         status: item.status,
-                        addedToCollection: true
+                        addedToCollection: true,
+                        dateScanned: item.dateScanned
                     )
                 }
             }
@@ -342,8 +334,30 @@ struct EnhancedBarcodeScannerView: View {
     }
     
     private func exportScanResults() {
-        // This would export the scan results as CSV or JSON
-        print("Exporting scan results...")
+        var csvContent = "ISBN,Title,Author,Status,Date Scanned\n"
+        
+        for item in scannedBooks {
+            let isbn = item.isbn
+            let title = item.book?.title ?? "Unknown"
+            let author = item.book?.authors.joined(separator: ", ") ?? "Unknown"
+            let status = item.status.rawValue
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateStyle = .short
+            dateFormatter.timeStyle = .short
+            let dateScanned = dateFormatter.string(from: item.dateScanned)
+            
+            csvContent += "\"\(isbn)\",\"\(title)\",\"\(author)\",\"\(status)\",\"\(dateScanned)\"\n"
+        }
+        
+        let tempURL = FileManager.default.temporaryDirectory.appendingPathComponent("scanned_books.csv")
+        
+        do {
+            try csvContent.write(to: tempURL, atomically: true, encoding: .utf8)
+            csvFileURL = tempURL
+            showingExportSheet = true
+        } catch {
+            print("Error exporting scan results: \(error)")
+        }
     }
 }
 

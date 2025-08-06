@@ -9,6 +9,7 @@ import SwiftUI
 
 struct MyBooksView: View {
     @ObservedObject private var readingTracker = ReadingTrackerService.shared
+    @ObservedObject private var readingListService = ReadingListService.shared
     @ObservedObject var viewModel: CollectionViewModel
     @State private var selectedTab: MyBooksTab = .readingLog
     @State private var showingAddLog = false
@@ -17,11 +18,13 @@ struct MyBooksView: View {
     
     enum MyBooksTab: String, CaseIterable {
         case readingLog = "Reading Log"
+        case readingList = "Reading List"
         case collections = "Collections"
         
         var icon: String {
             switch self {
             case .readingLog: return "book.fill"
+            case .readingList: return "bookmark.fill"
             case .collections: return "books.vertical.fill"
             }
         }
@@ -35,9 +38,12 @@ struct MyBooksView: View {
                 
                 // Content based on selected tab
                 Group {
-                    if selectedTab == .readingLog {
+                    switch selectedTab {
+                    case .readingLog:
                         ReadingLogTabView()
-                    } else {
+                    case .readingList:
+                        ReadingListTabView()
+                    case .collections:
                         CollectionsTabView()
                     }
                 }
@@ -170,6 +176,25 @@ struct MyBooksView: View {
             }
             .padding()
         }
+        .background(Color(.systemBackground))
+    }
+    
+    // MARK: - Reading List Tab
+    @ViewBuilder
+    private func ReadingListTabView() -> some View {
+        ScrollView {
+            LazyVStack(spacing: 16) {
+                if readingListService.readingList.isEmpty {
+                    EmptyReadingListView()
+                } else {
+                    ForEach(readingListService.readingList) { book in
+                        ReadingListBookCard(book: book)
+                    }
+                }
+            }
+            .padding()
+        }
+        .background(Color(.systemBackground))
     }
 }
 
@@ -416,6 +441,119 @@ struct EmptyCollectionsView: View {
                 // This will be handled by the parent view
             }
             .buttonStyle(.borderedProminent)
+        }
+        .padding(40)
+        .frame(maxWidth: .infinity)
+    }
+}
+
+struct ReadingListBookCard: View {
+    let book: Book
+    @ObservedObject private var readingListService = ReadingListService.shared
+    @ObservedObject private var readingTracker = ReadingTrackerService.shared
+    @State private var showingDetail = false
+    
+    var body: some View {
+        Button {
+            showingDetail = true
+        } label: {
+            HStack(spacing: 12) {
+                BookCoverView(book: book, width: 50, height: 70)
+                
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(book.title)
+                        .font(.subheadline)
+                        .fontWeight(.medium)
+                        .lineLimit(2)
+                        .multilineTextAlignment(.leading)
+                    
+                    Text("by \(book.authors.joined(separator: ", "))")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                        .lineLimit(1)
+                    
+                    if let pageCount = book.pageCount {
+                        Text("\(pageCount) pages")
+                            .font(.caption2)
+                            .foregroundColor(.secondary)
+                    }
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                
+                VStack(spacing: 8) {
+                    if readingTracker.isBookRead(book) {
+                        VStack {
+                            Image(systemName: "checkmark.circle.fill")
+                                .foregroundColor(.green)
+                                .font(.title3)
+                            Text("Read")
+                                .font(.caption2)
+                                .foregroundColor(.green)
+                                .fontWeight(.medium)
+                        }
+                    } else {
+                        Button {
+                            readingTracker.addReadingLog(for: book)
+                            readingListService.removeFromReadingList(book)
+                        } label: {
+                            VStack {
+                                Image(systemName: "plus.circle")
+                                    .font(.title3)
+                                Text("Mark Read")
+                                    .font(.caption2)
+                            }
+                        }
+                        .foregroundColor(.blue)
+                    }
+                    
+                    Button {
+                        readingListService.removeFromReadingList(book)
+                    } label: {
+                        Image(systemName: "xmark.circle")
+                            .font(.title3)
+                            .foregroundColor(.red)
+                    }
+                }
+            }
+            .padding()
+            .background(Color(.secondarySystemBackground))
+            .cornerRadius(12)
+        }
+        .buttonStyle(PlainButtonStyle())
+        .sheet(isPresented: $showingDetail) {
+            BookDetailView(book: book)
+        }
+    }
+}
+
+struct EmptyReadingListView: View {
+    var body: some View {
+        VStack(spacing: 24) {
+            Image(systemName: "bookmark")
+                .font(.system(size: 50))
+                .foregroundColor(.gray)
+            
+            VStack(spacing: 8) {
+                Text("Your Reading List is Empty")
+                    .font(.title2)
+                    .fontWeight(.semibold)
+                
+                Text("Discover new books and add them to your reading list to keep track of what you want to read next!")
+                    .font(.body)
+                    .foregroundColor(.secondary)
+                    .multilineTextAlignment(.center)
+            }
+            
+            NavigationLink(destination: DiscoverView()) {
+                HStack {
+                    Image(systemName: "magnifyingglass")
+                    Text("Discover Books")
+                }
+                .foregroundColor(.white)
+                .padding()
+                .background(Color.blue)
+                .cornerRadius(12)
+            }
         }
         .padding(40)
         .frame(maxWidth: .infinity)

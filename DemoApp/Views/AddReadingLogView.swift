@@ -11,6 +11,8 @@ struct AddReadingLogView: View {
     @Environment(\.dismiss) var dismiss
     @ObservedObject private var readingTracker = ReadingTrackerService.shared
     @ObservedObject private var openLibraryService = OpenLibraryService.shared
+    @ObservedObject private var readingListService = ReadingListService.shared
+    @ObservedObject private var collectionViewModel = CollectionViewModel()
     
     @State private var selectedMethod: LogMethod = .search
     @State private var searchQuery = ""
@@ -30,6 +32,10 @@ struct AddReadingLogView: View {
     @State private var rating: Int = 0
     @State private var notes = ""
     @State private var showingDatePicker = false
+    
+    // Collection management
+    @State private var selectedCollections: Set<UUID> = []
+    @State private var addToReadingList = false
     
     enum LogMethod: String, CaseIterable {
         case search = "Search"
@@ -340,6 +346,74 @@ struct AddReadingLogView: View {
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .lineLimit(3...6)
             }
+            
+            // Collections
+            VStack(alignment: .leading, spacing: 8) {
+                Text("Add to Collections (optional)")
+                    .font(.subheadline)
+                    .fontWeight(.medium)
+                
+                if collectionViewModel.collections.isEmpty {
+                    Text("No collections yet. Create one in the My Books tab!")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                        .italic()
+                } else {
+                    LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 2), spacing: 8) {
+                        ForEach(collectionViewModel.collections) { collection in
+                            Button {
+                                if selectedCollections.contains(collection.id) {
+                                    selectedCollections.remove(collection.id)
+                                } else {
+                                    selectedCollections.insert(collection.id)
+                                }
+                            } label: {
+                                HStack {
+                                    Image(systemName: selectedCollections.contains(collection.id) ? "checkmark.circle.fill" : "circle")
+                                        .foregroundColor(selectedCollections.contains(collection.id) ? .blue : .gray)
+                                    
+                                    Text(collection.name)
+                                        .font(.caption)
+                                        .foregroundColor(.primary)
+                                        .lineLimit(1)
+                                    
+                                    Spacer()
+                                }
+                                .padding(.horizontal, 8)
+                                .padding(.vertical, 6)
+                                .background(
+                                    selectedCollections.contains(collection.id) ? 
+                                    Color.blue.opacity(0.1) : 
+                                    Color(.tertiarySystemBackground)
+                                )
+                                .cornerRadius(8)
+                            }
+                            .buttonStyle(PlainButtonStyle())
+                        }
+                    }
+                }
+            }
+            
+            // Reading List option
+            VStack(alignment: .leading, spacing: 8) {
+                Button {
+                    addToReadingList.toggle()
+                } label: {
+                    HStack {
+                        Image(systemName: addToReadingList ? "checkmark.square.fill" : "square")
+                            .foregroundColor(addToReadingList ? .blue : .gray)
+                            .font(.title3)
+                        
+                        Text("Add to Reading List")
+                            .font(.subheadline)
+                            .fontWeight(.medium)
+                            .foregroundColor(.primary)
+                        
+                        Spacer()
+                    }
+                }
+                .buttonStyle(PlainButtonStyle())
+            }
         }
         .padding()
         .background(Color(.systemBackground))
@@ -430,6 +504,16 @@ struct AddReadingLogView: View {
             rating: rating > 0 ? rating : nil,
             notes: notes.isEmpty ? nil : notes
         )
+        
+        // Add to selected collections
+        for collectionId in selectedCollections {
+            collectionViewModel.addBookToCollection(bookToSave, collectionID: collectionId)
+        }
+        
+        // Add to reading list if requested
+        if addToReadingList {
+            readingListService.addToReadingList(bookToSave)
+        }
         
         dismiss()
     }

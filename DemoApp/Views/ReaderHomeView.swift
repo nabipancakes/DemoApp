@@ -28,8 +28,7 @@ struct ReaderHomeView: View {
                     // Reading Progress Card
                     ReadingProgressCard()
                     
-                    // Today's Book Section
-                    TodaysBookSection()
+
                     
                     // Quick Actions
                     QuickActionsSection()
@@ -268,9 +267,8 @@ struct ReaderHomeView: View {
                 
                 Spacer()
                 
-                NavigationLink("View All") {
-                    // This will navigate to the full reading tracker
-                    Text("Full Reading History")
+                NavigationLink(destination: MyBooksView(viewModel: viewModel)) {
+                    Text("View All")
                 }
                 .font(.caption)
                 .foregroundColor(selectedTheme.primaryColor)

@@ -19,6 +19,11 @@ class SplashViewController: UIViewController {
         playIntroVideo()
         let tap = UITapGestureRecognizer(target: self, action: #selector(handleScreenTap))
         view.addGestureRecognizer(tap)
+        
+        // Auto-advance after 5 seconds
+        DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
+            self.transitionToMainView()
+        }
     }
     
     override func viewDidLayoutSubviews() {
@@ -55,7 +60,7 @@ class SplashViewController: UIViewController {
     }
 
     @objc private func videoDidEnd(notification: Notification) {
-        // empty on purpose
+        transitionToMainView()
     }
 
     private func setupTapGesture() {

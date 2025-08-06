@@ -21,19 +21,22 @@ struct SettingsView: View {
     var body: some View {
         NavigationView {
             Form {
-                // User Role Section
-                Section(header: Text("User Role")) {
-                    HStack {
-                        Label("Current Role", systemImage: "person.circle")
-                        Spacer()
-                        Text(userRole.displayName)
-                            .foregroundColor(.secondary)
+                // User Role Section (only show for staff)
+                if userRole == .staff {
+                    Section(header: Text("Staff Role")) {
+                        HStack {
+                            Label("Admin Access", systemImage: "person.badge.key")
+                            Spacer()
+                            Text("Staff")
+                                .foregroundColor(.orange)
+                                .fontWeight(.medium)
+                        }
+                        
+                        Button("Switch to Reader Mode") {
+                            userRole = .reader
+                        }
+                        .foregroundColor(.blue)
                     }
-                    
-                    Button("Switch Role") {
-                        showingRoleAlert = true
-                    }
-                    .foregroundColor(.blue)
                 }
                 
                 // Theme Section
@@ -92,6 +95,21 @@ struct SettingsView: View {
                 }
             }
             .navigationTitle("Settings")
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Settings") {
+                        // Hidden access to staff mode
+                        showingPasswordAlert = true
+                    }
+                    .hidden()
+                }
+            }
+            .onTapGesture(count: 5) {
+                // Hidden staff access via 5 taps on settings
+                if userRole == .reader {
+                    showingPasswordAlert = true
+                }
+            }
             .alert("Switch User Role", isPresented: $showingRoleAlert) {
                 Button("Reader") {
                     userRole = .reader
