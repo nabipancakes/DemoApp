@@ -184,15 +184,38 @@ struct SettingsView: View {
         let coreDataManager = CoreDataManager.shared
         
         // Clear all reading logs
-        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = ReadingLog.fetchRequest()
-        let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+        let readingLogRequest: NSFetchRequest<NSFetchRequestResult> = ReadingLog.fetchRequest()
+        let deleteReadingLogsRequest = NSBatchDeleteRequest(fetchRequest: readingLogRequest)
+        
+        // Clear all Core Data books
+        let booksRequest: NSFetchRequest<NSFetchRequestResult> = CoreDataBook.fetchRequest()
+        let deleteBooksRequest = NSBatchDeleteRequest(fetchRequest: booksRequest)
+        
+        // Clear all monthly books
+        let monthlyBooksRequest: NSFetchRequest<NSFetchRequestResult> = MonthlyBook.fetchRequest()
+        let deleteMonthlyBooksRequest = NSBatchDeleteRequest(fetchRequest: monthlyBooksRequest)
         
         do {
-            try coreDataManager.context.execute(deleteRequest)
+            try coreDataManager.context.execute(deleteReadingLogsRequest)
+            try coreDataManager.context.execute(deleteBooksRequest)
+            try coreDataManager.context.execute(deleteMonthlyBooksRequest)
             try coreDataManager.context.save()
             
-            // Refresh reading tracker
+            // Clear UserDefaults data
+            UserDefaults.standard.removeObject(forKey: "reading_list")
+            UserDefaults.standard.removeObject(forKey: "readingGoal")
+            UserDefaults.standard.synchronize()
+            
+            // Refresh all services
             ReadingTrackerService.shared.loadReadingLogs()
+            ReadingListService.shared.readingList.removeAll()
+            
+            print("Successfully cleared all app data")
+            
+            // Show confirmation to user
+            DispatchQueue.main.async {
+                // You could add an alert here if needed
+            }
         } catch {
             print("Error clearing data: \(error)")
         }
