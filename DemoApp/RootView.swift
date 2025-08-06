@@ -1,6 +1,6 @@
 //
 //  RootView.swift
-//  DemoApp
+//  PaperAndInk
 //
 //  Created by Benjamin Guo on 6/19/25.
 //

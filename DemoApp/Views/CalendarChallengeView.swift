@@ -198,7 +198,7 @@ struct EditMonthlyBookView: View {
     @State private var coverURL = ""
     @State private var description = ""
     @State private var showingScanner = false
-    @State private var scannedBook: DemoApp.Book?
+    @State private var scannedBook: PaperAndInk.Book?
     
     var body: some View {
         NavigationView {

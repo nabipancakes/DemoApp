@@ -64,7 +64,7 @@ class ReadingTrackerService: ObservableObject {
         }
     }
     
-    func addReadingLog(for book: DemoApp.Book, dateFinished: Date = Date(), rating: Int? = nil, notes: String? = nil) {
+    func addReadingLog(for book: PaperAndInk.Book, dateFinished: Date = Date(), rating: Int? = nil, notes: String? = nil) {
         // First ensure the book exists in Core Data
         let coreDataBook = coreDataManager.createBook(from: book)
         
@@ -81,12 +81,12 @@ class ReadingTrackerService: ObservableObject {
         loadReadingLogs()
     }
     
-    func isBookRead(_ book: DemoApp.Book) -> Bool {
+    func isBookRead(_ book: PaperAndInk.Book) -> Bool {
         let coreDataBook = coreDataManager.createBook(from: book)
         return !coreDataManager.fetchReadingLogs(for: coreDataBook).isEmpty
     }
     
-    func getReadingLogs(for book: DemoApp.Book) -> [ReadingLog] {
+    func getReadingLogs(for book: PaperAndInk.Book) -> [ReadingLog] {
         let coreDataBook = coreDataManager.createBook(from: book)
         return coreDataManager.fetchReadingLogs(for: coreDataBook)
     }

@@ -1,13 +1,13 @@
 //
 //  DonationServiceTests.swift
-//  DemoAppTests
+//  PaperAndInkTests
 //
 //  Created by Stephanie Shen on 4/15/25.
 //
 
 import XCTest
 import Combine
-@testable import DemoApp
+@testable import PaperAndInk
 
 class DonationServiceTests: XCTestCase {
     var donationService: DonationService!

@@ -10,7 +10,7 @@ import UIKit
 import CoreData
 
 @main
-struct DemoAppApp: App {
+struct PaperAndInkApp: App {
     let persistenceController = CoreDataManager.shared
     
     var body: some Scene {

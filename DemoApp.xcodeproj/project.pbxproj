@@ -16,14 +16,14 @@
 			containerPortal = 1C7CC7672DE632A400A5F3CD /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 1C7CC76E2DE632A400A5F3CD;
-			remoteInfo = DemoApp;
+			remoteInfo = PaperAndInk;
 		};
 		1C7CC7872DE632A600A5F3CD /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 1C7CC7672DE632A400A5F3CD /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 1C7CC76E2DE632A400A5F3CD;
-			remoteInfo = DemoApp;
+			remoteInfo = PaperAndInk;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -103,7 +103,7 @@
 /* Begin PBXNativeTarget section */
 		1C7CC76E2DE632A400A5F3CD /* DemoApp */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 1C7CC7902DE632A600A5F3CD /* Build configuration list for PBXNativeTarget "DemoApp" */;
+			buildConfigurationList = 1C7CC7902DE632A600A5F3CD /* Build configuration list for PBXNativeTarget "PaperAndInk" */;
 			buildPhases = (
 				1C7CC76B2DE632A400A5F3CD /* Sources */,
 				1C7CC76C2DE632A400A5F3CD /* Frameworks */,
@@ -116,16 +116,16 @@
 			fileSystemSynchronizedGroups = (
 				1C7CC7712DE632A400A5F3CD /* DemoApp */,
 			);
-			name = DemoApp;
+			name = PaperAndInk;
 			packageProductDependencies = (
 			);
-			productName = DemoApp;
+			productName = PaperAndInk;
 			productReference = 1C7CC76F2DE632A400A5F3CD /* DemoApp.app */;
 			productType = "com.apple.product-type.application";
 		};
 		1C7CC77B2DE632A600A5F3CD /* DemoAppTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 1C7CC7932DE632A600A5F3CD /* Build configuration list for PBXNativeTarget "DemoAppTests" */;
+			buildConfigurationList = 1C7CC7932DE632A600A5F3CD /* Build configuration list for PBXNativeTarget "PaperAndInkTests" */;
 			buildPhases = (
 				1C7CC7782DE632A600A5F3CD /* Sources */,
 				1C7CC7792DE632A600A5F3CD /* Frameworks */,
@@ -139,16 +139,16 @@
 			fileSystemSynchronizedGroups = (
 				1C7CC77F2DE632A600A5F3CD /* DemoAppTests */,
 			);
-			name = DemoAppTests;
+			name = PaperAndInkTests;
 			packageProductDependencies = (
 			);
-			productName = DemoAppTests;
+			productName = PaperAndInkTests;
 			productReference = 1C7CC77C2DE632A600A5F3CD /* DemoAppTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		1C7CC7852DE632A600A5F3CD /* DemoAppUITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 1C7CC7962DE632A600A5F3CD /* Build configuration list for PBXNativeTarget "DemoAppUITests" */;
+			buildConfigurationList = 1C7CC7962DE632A600A5F3CD /* Build configuration list for PBXNativeTarget "PaperAndInkUITests" */;
 			buildPhases = (
 				1C7CC7822DE632A600A5F3CD /* Sources */,
 				1C7CC7832DE632A600A5F3CD /* Frameworks */,
@@ -162,10 +162,10 @@
 			fileSystemSynchronizedGroups = (
 				1C7CC7892DE632A600A5F3CD /* DemoAppUITests */,
 			);
-			name = DemoAppUITests;
+			name = PaperAndInkUITests;
 			packageProductDependencies = (
 			);
-			productName = DemoAppUITests;
+			productName = PaperAndInkUITests;
 			productReference = 1C7CC7862DE632A600A5F3CD /* DemoAppUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
@@ -192,7 +192,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 1C7CC76A2DE632A400A5F3CD /* Build configuration list for PBXProject "DemoApp" */;
+			buildConfigurationList = 1C7CC76A2DE632A400A5F3CD /* Build configuration list for PBXProject "PaperAndInk" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -419,7 +419,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = me.thebookdiaries.DemoApp;
+				PRODUCT_BUNDLE_IDENTIFIER = me.thebookdiaries.PaperAndInk;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -449,7 +449,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = me.thebookdiaries.DemoApp;
+				PRODUCT_BUNDLE_IDENTIFIER = me.thebookdiaries.PaperAndInk;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -467,12 +467,12 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = me.thebookdiaries.DemoAppTests;
+				PRODUCT_BUNDLE_IDENTIFIER = me.thebookdiaries.PaperAndInkTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DemoApp.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/DemoApp";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PaperAndInk.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/PaperAndInk";
 			};
 			name = Debug;
 		};
@@ -486,12 +486,12 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = me.thebookdiaries.DemoAppTests;
+				PRODUCT_BUNDLE_IDENTIFIER = me.thebookdiaries.PaperAndInkTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DemoApp.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/DemoApp";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PaperAndInk.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/PaperAndInk";
 			};
 			name = Release;
 		};
@@ -503,12 +503,12 @@
 				DEVELOPMENT_TEAM = HCW72Z4NCK;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = me.thebookdiaries.DemoAppUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = me.thebookdiaries.PaperAndInkUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = DemoApp;
+				TEST_TARGET_NAME = PaperAndInk;
 			};
 			name = Debug;
 		};
@@ -520,19 +520,19 @@
 				DEVELOPMENT_TEAM = HCW72Z4NCK;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = me.thebookdiaries.DemoAppUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = me.thebookdiaries.PaperAndInkUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = DemoApp;
+				TEST_TARGET_NAME = PaperAndInk;
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		1C7CC76A2DE632A400A5F3CD /* Build configuration list for PBXProject "DemoApp" */ = {
+		1C7CC76A2DE632A400A5F3CD /* Build configuration list for PBXProject "PaperAndInk" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1C7CC78E2DE632A600A5F3CD /* Debug */,
@@ -541,7 +541,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		1C7CC7902DE632A600A5F3CD /* Build configuration list for PBXNativeTarget "DemoApp" */ = {
+		1C7CC7902DE632A600A5F3CD /* Build configuration list for PBXNativeTarget "PaperAndInk" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1C7CC7912DE632A600A5F3CD /* Debug */,
@@ -550,7 +550,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		1C7CC7932DE632A600A5F3CD /* Build configuration list for PBXNativeTarget "DemoAppTests" */ = {
+		1C7CC7932DE632A600A5F3CD /* Build configuration list for PBXNativeTarget "PaperAndInkTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1C7CC7942DE632A600A5F3CD /* Debug */,
@@ -559,7 +559,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		1C7CC7962DE632A600A5F3CD /* Build configuration list for PBXNativeTarget "DemoAppUITests" */ = {
+		1C7CC7962DE632A600A5F3CD /* Build configuration list for PBXNativeTarget "PaperAndInkUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1C7CC7972DE632A600A5F3CD /* Debug */,

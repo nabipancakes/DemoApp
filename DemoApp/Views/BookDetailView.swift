@@ -1,6 +1,6 @@
 //
 //  BookDetailView.swift
-//  DemoApp
+//  PaperAndInk
 //
 //  Created by Stephanie Shen on 6/20/25.
 //

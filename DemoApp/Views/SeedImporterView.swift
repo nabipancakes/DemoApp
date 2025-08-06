@@ -241,7 +241,7 @@ struct ImportSeedBooksView: View {
     private func importBooks() {
         do {
             let data = importText.data(using: .utf8) ?? Data()
-            let books = try JSONDecoder().decode([DemoApp.Book].self, from: data)
+            let books = try JSONDecoder().decode([PaperAndInk.Book].self, from: data)
             
             for book in books {
                 DailyBookService.shared.addBookToSeedBooks(book)
@@ -299,7 +299,7 @@ struct AddSeedBookView: View {
     }
     
     private func addBook() {
-        let newBook = DemoApp.Book(
+        let newBook = PaperAndInk.Book(
             id: UUID().uuidString,
             title: title,
             authors: authors.components(separatedBy: ",").map { $0.trimmingCharacters(in: .whitespaces) },

@@ -1,13 +1,13 @@
 //
-//  DemoAppUITestsLaunchTests.swift
-//  DemoAppUITests
+//  PaperAndInkUITestsLaunchTests.swift
+//  PaperAndInkUITests
 //
 //  Created by Stephanie Shen on 5/27/25.
 //
 
 import XCTest
 
-final class DemoAppUITestsLaunchTests: XCTestCase {
+final class PaperAndInkUITestsLaunchTests: XCTestCase {
 
     override class var runsForEachTargetApplicationUIConfiguration: Bool {
         true

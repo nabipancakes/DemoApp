@@ -36,7 +36,7 @@ class CollectionViewModel: ObservableObject {
         }
     }
     
-    func addBookToCollection(_ book: DemoApp.Book, collectionID: UUID) {
+    func addBookToCollection(_ book: PaperAndInk.Book, collectionID: UUID) {
         guard let collection = collections.first(where: { $0.id == collectionID }) else { return }
         
         // Add book to collection

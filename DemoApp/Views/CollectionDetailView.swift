@@ -1,6 +1,6 @@
 //
 //  CollectionDetailView.swift
-//  DemoApp
+//  PaperAndInk
 //
 //  Created by Benjamin Guo on 6/18/25.
 //

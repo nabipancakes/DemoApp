@@ -41,7 +41,7 @@ class OpenLibraryService: ObservableObject {
     
     // MARK: - Public Methods
     
-    func fetchBookByISBN(_ isbn: String) -> AnyPublisher<DemoApp.Book?, Never> {
+    func fetchBookByISBN(_ isbn: String) -> AnyPublisher<PaperAndInk.Book?, Never> {
         isLoading = true
         error = nil
         
@@ -67,11 +67,11 @@ class OpenLibraryService: ObservableObject {
         return URLSession.shared.dataTaskPublisher(for: url)
             .map(\.data)
             .decode(type: OpenLibraryResponse.self, decoder: JSONDecoder())
-            .map { response -> DemoApp.Book? in
+            .map { response -> PaperAndInk.Book? in
                 let isbnKey = "ISBN:\(cleanedISBN)"
                 guard let openLibraryBook = response[isbnKey] else { return nil }
                 
-                return DemoApp.Book(
+                return PaperAndInk.Book(
                     id: openLibraryBook.key,
                     title: openLibraryBook.title,
                     authors: openLibraryBook.authors?.map { $0.name } ?? ["Unknown Author"],
@@ -83,7 +83,7 @@ class OpenLibraryService: ObservableObject {
                     ageRange: nil
                 )
             }
-            .catch { error -> AnyPublisher<DemoApp.Book?, Never> in
+            .catch { error -> AnyPublisher<PaperAndInk.Book?, Never> in
                 DispatchQueue.main.async { [weak self] in
                     if let decodingError = error as? DecodingError {
                         self?.error = "Book not found or invalid format"
@@ -102,7 +102,7 @@ class OpenLibraryService: ObservableObject {
             .eraseToAnyPublisher()
     }
     
-    func searchBooks(query: String) -> AnyPublisher<[DemoApp.Book], Never> {
+    func searchBooks(query: String) -> AnyPublisher<[PaperAndInk.Book], Never> {
         isLoading = true
         error = nil
         
@@ -122,7 +122,7 @@ class OpenLibraryService: ObservableObject {
             .decode(type: OpenLibrarySearchResponse.self, decoder: JSONDecoder())
             .map { response in
                 return response.docs.map { doc in
-                    DemoApp.Book(
+                    PaperAndInk.Book(
                         id: doc.key,
                         title: doc.title,
                         authors: doc.author_name ?? ["Unknown Author"],
@@ -135,7 +135,7 @@ class OpenLibraryService: ObservableObject {
                     )
                 }
             }
-            .catch { error -> AnyPublisher<[DemoApp.Book], Never> in
+            .catch { error -> AnyPublisher<[PaperAndInk.Book], Never> in
                 DispatchQueue.main.async { [weak self] in
                     self?.error = "Failed to search books: \(error.localizedDescription)"
                     self?.isLoading = false

@@ -1,6 +1,6 @@
 //
 //  RoleSwitchingUITests.swift
-//  DemoAppUITests
+//  PaperAndInkUITests
 //
 //  Created by Stephanie Shen on 4/15/25.
 //

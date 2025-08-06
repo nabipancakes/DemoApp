@@ -16,7 +16,7 @@ struct CollectionBarcodeScannerView: View {
     @ObservedObject private var openLibraryService = OpenLibraryService.shared
     @State private var scannedCode = ""
     @State private var showingScanner = true
-    @State private var scannedBook: DemoApp.Book?
+    @State private var scannedBook: PaperAndInk.Book?
     @State private var addedToCollection = false
     @State private var showingSuccessAlert = false
     @Environment(\.dismiss) var dismiss
@@ -152,7 +152,7 @@ struct CollectionBarcodeScannerView: View {
             .store(in: &openLibraryService.cancellables)
     }
     
-    private func addBookToCollection(_ book: DemoApp.Book) {
+    private func addBookToCollection(_ book: PaperAndInk.Book) {
         viewModel.addBookToCollection(book, collectionID: collection.id)
         addedToCollection = true
         showingSuccessAlert = true

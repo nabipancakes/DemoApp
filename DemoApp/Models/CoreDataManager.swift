@@ -40,7 +40,7 @@ class CoreDataManager: ObservableObject {
     
     // MARK: - Book Operations
     
-    func createBook(from book: DemoApp.Book) -> CoreDataBook {
+    func createBook(from book: PaperAndInk.Book) -> CoreDataBook {
         let fetchRequest: NSFetchRequest<CoreDataBook> = CoreDataBook.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "id == %@", book.id)
         

@@ -11,7 +11,7 @@ struct ISBNView: View {
     @ObservedObject var viewModel: CollectionViewModel
     @State private var showingScanner = false
     @State private var scannedISBN = ""
-    @State private var scannedBook: DemoApp.Book?
+    @State private var scannedBook: PaperAndInk.Book?
     
     @State private var selectedCollectionID: UUID? = nil
 

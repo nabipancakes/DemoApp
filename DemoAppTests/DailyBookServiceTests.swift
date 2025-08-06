@@ -1,12 +1,12 @@
 //
 //  DailyBookServiceTests.swift
-//  DemoAppTests
+//  PaperAndInkTests
 //
 //  Created by Stephanie Shen on 4/15/25.
 //
 
 import XCTest
-@testable import DemoApp
+@testable import PaperAndInk
 
 class DailyBookServiceTests: XCTestCase {
     var dailyBookService: DailyBookService!

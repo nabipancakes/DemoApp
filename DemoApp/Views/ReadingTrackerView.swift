@@ -260,7 +260,7 @@ struct EmptyReadingLogsView: View {
 
 
 struct BookPickerView: View {
-    @Binding var selectedBook: DemoApp.Book?
+    @Binding var selectedBook: PaperAndInk.Book?
     @Environment(\.dismiss) var dismiss
     @ObservedObject private var dailyBookService = DailyBookService.shared
     

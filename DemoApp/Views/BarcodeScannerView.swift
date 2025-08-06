@@ -14,7 +14,7 @@ struct BarcodeScannerView: View {
     @ObservedObject private var coreDataManager = CoreDataManager.shared
     @State private var scannedCode = ""
     @State private var showingScanner = false
-    @State private var scannedBook: DemoApp.Book?
+    @State private var scannedBook: PaperAndInk.Book?
     @State private var showingBookResult = false
     @State private var addedToCatalog = false
     @State private var showingSuccessAlert = false
@@ -123,7 +123,7 @@ struct BarcodeScannerView: View {
             .store(in: &openLibraryService.cancellables)
     }
     
-    private func addBookToCatalog(_ book: DemoApp.Book) {
+    private func addBookToCatalog(_ book: PaperAndInk.Book) {
         // Create the book in Core Data
         let coreDataBook = coreDataManager.createBook(from: book)
         coreDataBook.isbn = scannedCode // Store the scanned ISBN
