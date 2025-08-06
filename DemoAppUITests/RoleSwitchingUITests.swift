@@ -109,12 +109,15 @@ class RoleSwitchingUITests: XCTestCase {
         XCTAssertTrue(themePicker.exists)
         
         // Test different themes
-        let classicTheme = app.pickerWheels["Theme"].adjust(toPickerWheelValue: "Classic")
-        let midnightTheme = app.pickerWheels["Theme"].adjust(toPickerWheelValue: "Midnight")
-        let sepiaTheme = app.pickerWheels["Theme"].adjust(toPickerWheelValue: "Sepia")
+        let themePickerWheel = app.pickerWheels["Theme"]
+        XCTAssertTrue(themePickerWheel.exists)
+        
+        themePickerWheel.adjust(toPickerWheelValue: "Classic")
+        themePickerWheel.adjust(toPickerWheelValue: "Midnight")
+        themePickerWheel.adjust(toPickerWheelValue: "Sepia")
         
         // Verify theme picker works
-        XCTAssertTrue(classicTheme.exists || midnightTheme.exists || sepiaTheme.exists)
+        // No need to check existence after adjustment, as adjust returns Void
     }
     
     func testSettingsNavigation() throws {

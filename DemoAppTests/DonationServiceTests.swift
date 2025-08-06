@@ -29,13 +29,17 @@ class DonationServiceTests: XCTestCase {
         let expectation = XCTestExpectation(description: "Donation completed")
         
         donationService.makeDonation(amount: 10.0, paymentToken: "test_token")
-            .sink { result in
+            .sink(receiveCompletion: { completion in
+                if case .failure(let error) = completion {
+                    XCTFail("Unexpected failure: \(error)")
+                }
+            }, receiveValue: { result in
                 XCTAssertTrue(result.success)
                 XCTAssertNotNil(result.transactionId)
                 XCTAssertEqual(result.amount, 10.0)
                 XCTAssertNil(result.error)
                 expectation.fulfill()
-            }
+            })
             .store(in: &cancellables)
         
         wait(for: [expectation], timeout: 5.0)
@@ -45,13 +49,17 @@ class DonationServiceTests: XCTestCase {
         let expectation = XCTestExpectation(description: "Apple Pay donation completed")
         
         donationService.makeDonationWithApplePay(amount: 25.0)
-            .sink { result in
+            .sink(receiveCompletion: { completion in
+                if case .failure(let error) = completion {
+                    XCTFail("Unexpected failure: \(error)")
+                }
+            }, receiveValue: { result in
                 XCTAssertTrue(result.success)
                 XCTAssertNotNil(result.transactionId)
                 XCTAssertEqual(result.amount, 25.0)
                 XCTAssertNil(result.error)
                 expectation.fulfill()
-            }
+            })
             .store(in: &cancellables)
         
         wait(for: [expectation], timeout: 5.0)
@@ -61,13 +69,17 @@ class DonationServiceTests: XCTestCase {
         let expectation = XCTestExpectation(description: "Stripe donation completed")
         
         donationService.makeDonationWithStripe(amount: 50.0, paymentMethodId: "stripe_test_method")
-            .sink { result in
+            .sink(receiveCompletion: { completion in
+                if case .failure(let error) = completion {
+                    XCTFail("Unexpected failure: \(error)")
+                }
+            }, receiveValue: { result in
                 XCTAssertTrue(result.success)
                 XCTAssertNotNil(result.transactionId)
                 XCTAssertEqual(result.amount, 50.0)
                 XCTAssertNil(result.error)
                 expectation.fulfill()
-            }
+            })
             .store(in: &cancellables)
         
         wait(for: [expectation], timeout: 5.0)
@@ -77,12 +89,14 @@ class DonationServiceTests: XCTestCase {
         let expectation = XCTestExpectation(description: "Invalid amount error")
         
         donationService.makeDonation(amount: -5.0, paymentToken: "test_token")
-            .sink { result in
-                XCTAssertFalse(result.success)
-                XCTAssertNotNil(result.error)
-                XCTAssertEqual(result.error, .invalidAmount)
-                expectation.fulfill()
-            }
+            .sink(receiveCompletion: { completion in
+                if case .failure(let error) = completion {
+                    XCTAssertEqual(error, .invalidAmount)
+                    expectation.fulfill()
+                }
+            }, receiveValue: { result in
+                XCTFail("Expected failure, but got success: \(result)")
+            })
             .store(in: &cancellables)
         
         wait(for: [expectation], timeout: 5.0)
@@ -92,12 +106,14 @@ class DonationServiceTests: XCTestCase {
         let expectation = XCTestExpectation(description: "Invalid payment token error")
         
         donationService.makeDonation(amount: 10.0, paymentToken: "")
-            .sink { result in
-                XCTAssertFalse(result.success)
-                XCTAssertNotNil(result.error)
-                XCTAssertEqual(result.error, .invalidPaymentToken)
-                expectation.fulfill()
-            }
+            .sink(receiveCompletion: { completion in
+                if case .failure(let error) = completion {
+                    XCTAssertEqual(error, .invalidPaymentToken)
+                    expectation.fulfill()
+                }
+            }, receiveValue: { result in
+                XCTFail("Expected failure, but got success: \(result)")
+            })
             .store(in: &cancellables)
         
         wait(for: [expectation], timeout: 5.0)
@@ -119,14 +135,18 @@ class DonationServiceTests: XCTestCase {
         let expectation = XCTestExpectation(description: "Donation made")
         
         donationService.makeDonation(amount: 5.0, paymentToken: "test_token")
-            .sink { result in
+            .sink(receiveCompletion: { completion in
+                if case .failure(let error) = completion {
+                    XCTFail("Unexpected failure: \(error)")
+                }
+            }, receiveValue: { result in
                 XCTAssertTrue(result.success)
                 // Check if recent donation is detected
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                     XCTAssertTrue(self.donationService.hasRecentDonation)
                     expectation.fulfill()
                 }
-            }
+            })
             .store(in: &cancellables)
         
         wait(for: [expectation], timeout: 5.0)
@@ -140,14 +160,18 @@ class DonationServiceTests: XCTestCase {
         let expectation = XCTestExpectation(description: "Donation made")
         
         donationService.makeDonation(amount: 15.0, paymentToken: "test_token")
-            .sink { result in
+            .sink(receiveCompletion: { completion in
+                if case .failure(let error) = completion {
+                    XCTFail("Unexpected failure: \(error)")
+                }
+            }, receiveValue: { result in
                 XCTAssertTrue(result.success)
                 // Check total donated
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                     XCTAssertEqual(self.donationService.totalDonated, 15.0)
                     expectation.fulfill()
                 }
-            }
+            })
             .store(in: &cancellables)
         
         wait(for: [expectation], timeout: 5.0)
