@@ -104,10 +104,13 @@ struct MyBooksView: View {
                         selectedTheme.primaryColor.opacity(0.1) : 
                         Color.clear
                     )
+                    .cornerRadius(8)
+                    .clipped()
                 }
                 .buttonStyle(PlainButtonStyle())
             }
         }
+        .padding(.horizontal, 16)
         .background(Color(.systemBackground))
         .overlay(
             Rectangle()
@@ -115,6 +118,7 @@ struct MyBooksView: View {
                 .foregroundColor(Color(.separator)),
             alignment: .bottom
         )
+        .clipped()
     }
     
     // MARK: - Reading Log Tab
@@ -176,7 +180,6 @@ struct MyBooksView: View {
             }
             .padding()
         }
-        .background(Color(.systemBackground))
     }
     
     // MARK: - Reading List Tab
@@ -194,7 +197,6 @@ struct MyBooksView: View {
             }
             .padding()
         }
-        .background(Color(.systemBackground))
     }
 }
 

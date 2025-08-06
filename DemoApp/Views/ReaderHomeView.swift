@@ -267,11 +267,10 @@ struct ReaderHomeView: View {
                 
                 Spacer()
                 
-                NavigationLink(destination: MyBooksView(viewModel: viewModel)) {
-                    Text("View All")
-                }
-                .font(.caption)
-                .foregroundColor(selectedTheme.primaryColor)
+                Text("View All in My Books →")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                    .italic()
             }
             
             if readingTracker.readingLogs.isEmpty {
